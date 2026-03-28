@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Repair vs Replace Calculator UK 2026 | DecisionCalc</title>
+  <meta name="description" content="Free UK car repair vs replace calculator. Should you fix your car or buy a new one? Get a data-driven recommendation in seconds based on repair cost, car value and running costs.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; }
+    a { color: #0F6E56; }
+    nav { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+    .nav-brand { font-weight: 700; font-size: 1.1rem; color: #1a1a1a; text-decoration: none; }
+    .nav-tag { font-size: 0.75rem; background: #f0fdf4; color: #0F6E56; padding: 2px 10px; border-radius: 20px; border: 1px solid #bbf7d0; }
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+    .breadcrumb { font-size: 0.8rem; color: #6b7280; margin-bottom: 20px; }
+    .breadcrumb a { color: #6b7280; text-decoration: none; }
+    .breadcrumb a:hover { color: #0F6E56; }
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 1.9rem; font-weight: 700; color: #111; margin-bottom: 8px; }
+    .page-header p { color: #4b5563; font-size: 1rem; max-width: 620px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 28px; margin-bottom: 20px; }
+    .card-title { font-size: 1rem; font-weight: 600; color: #111; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    .card-title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: #0F6E56; border-radius: 2px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.875rem; font-weight: 500; color: #374151; }
+    .form-group .hint { font-size: 0.75rem; color: #9ca3af; }
+    .input-wrap { position: relative; }
+    .input-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: #6b7280; pointer-events: none; }
+    .input-suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: #9ca3af; pointer-events: none; }
+    input[type="number"], select { width: 100%; padding: 10px 40px 10px 28px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.95rem; color: #111; background: #fff; outline: none; transition: border-color .15s; -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input[type="number"]:focus, select:focus { border-color: #0F6E56; box-shadow: 0 0 0 3px rgba(15,110,86,.1); }
+    select { padding-left: 12px; cursor: pointer; }
+    .range-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .range-val { font-size: 0.875rem; font-weight: 600; color: #0F6E56; text-align: right; }
+    .range-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: #9ca3af; }
+    input[type="range"] { width: 100%; padding: 0; height: 6px; -webkit-appearance: none; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #0F6E56; border-radius: 50%; cursor: pointer; }
+    .btn { width: 100%; padding: 14px; background: #0F6E56; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 24px; transition: background .15s; }
+    .btn:hover { background: #0a5a46; }
+    .results { display: none; }
+    .results.show { display: block; }
+
+    /* Verdict hero */
+    .verdict-hero { border-radius: 14px; padding: 32px; text-align: center; margin-bottom: 20px; }
+    .verdict-hero.repair { background: #f0fdf4; border: 2px solid #0F6E56; }
+    .verdict-hero.replace { background: #eff6ff; border: 2px solid #1d4ed8; }
+    .verdict-hero.marginal { background: #fffbeb; border: 2px solid #d97706; }
+    .verdict-icon { font-size: 3rem; margin-bottom: 12px; }
+    .verdict-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+    .verdict-hero.repair .verdict-title { color: #0a5a46; }
+    .verdict-hero.replace .verdict-title { color: #1e40af; }
+    .verdict-hero.marginal .verdict-title { color: #92400e; }
+    .verdict-sub { font-size: 1rem; max-width: 520px; margin: 0 auto; }
+    .verdict-hero.repair .verdict-sub { color: #166534; }
+    .verdict-hero.replace .verdict-sub { color: #1e3a8a; }
+    .verdict-hero.marginal .verdict-sub { color: #78350f; }
+
+    /* Score meter */
+    .score-section { margin-bottom: 20px; }
+    .score-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; }
+    .score-track { height: 20px; background: #f3f4f6; border-radius: 10px; overflow: hidden; position: relative; }
+    .score-fill { height: 100%; border-radius: 10px; transition: width .8s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 0.75rem; font-weight: 600; color: #fff; }
+    .score-repair { background: #0F6E56; }
+    .score-replace { background: #1d4ed8; }
+    .score-ticks { display: flex; justify-content: space-between; font-size: 0.68rem; color: #9ca3af; margin-top: 4px; padding: 0 2px; }
+
+    /* Cost comparison */
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    @media (max-width: 560px) { .comparison-grid { grid-template-columns: 1fr; } }
+    .comp-box { border-radius: 10px; padding: 20px; }
+    .comp-box.keep { background: #f0fdf4; border: 1.5px solid #bbf7d0; }
+    .comp-box.sell { background: #eff6ff; border: 1.5px solid #bfdbfe; }
+    .comp-box .label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+    .comp-box.keep .label { color: #0F6E56; }
+    .comp-box.sell .label { color: #1d4ed8; }
+    .comp-box .row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,.06); }
+    .comp-box .row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .comp-box .row .k { color: #4b5563; }
+    .comp-box .row .v { font-weight: 600; color: #111; }
+    .comp-box .total-row { display: flex; justify-content: space-between; font-size: 1rem; font-weight: 700; margin-top: 12px; padding-top: 12px; border-top: 2px solid rgba(0,0,0,.1); }
+    .comp-box.keep .total-row .v { color: #0a5a46; }
+    .comp-box.sell .total-row .v { color: #1e40af; }
+
+    /* Factor checklist */
+    .factor-list { display: flex; flex-direction: column; gap: 10px; }
+    .factor-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 8px; background: #f9fafb; border: 1px solid #f3f4f6; }
+    .factor-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+    .factor-text .factor-title { font-size: 0.875rem; font-weight: 600; color: #111; margin-bottom: 2px; }
+    .factor-text .factor-desc { font-size: 0.8rem; color: #6b7280; line-height: 1.5; }
+    .factor-item.good { background: #f0fdf4; border-color: #bbf7d0; }
+    .factor-item.bad { background: #fef2f2; border-color: #fecaca; }
+    .factor-item.neutral { background: #fffbeb; border-color: #fde68a; }
+
+    .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 0.875rem; }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-row .key { color: #4b5563; }
+    .breakdown-row .val { font-weight: 600; color: #111; }
+    .breakdown-row .val.green { color: #0F6E56; }
+    .breakdown-row .val.red { color: #dc2626; }
+    .breakdown-row .val.amber { color: #d97706; }
+
+    .cta-box { background: #fff; border: 1.5px solid #0F6E56; border-radius: 12px; padding: 24px; margin-top: 24px; }
+    .cta-box.replace-cta { border-color: #1d4ed8; }
+    .cta-box h3 { font-size: 1.05rem; font-weight: 600; color: #111; margin-bottom: 6px; }
+    .cta-box p { font-size: 0.875rem; color: #4b5563; margin-bottom: 16px; }
+    .cta-links { display: flex; flex-direction: column; gap: 10px; }
+    .cta-link { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: opacity .15s; }
+    .cta-link:hover { opacity: 0.88; }
+    .cta-link.primary { background: #0F6E56; color: #fff; }
+    .cta-link.primary.blue { background: #1d4ed8; }
+    .cta-link.secondary { background: #f8f9fa; color: #1a1a1a; border: 1px solid #e5e7eb; }
+    .cta-link .arrow { font-size: 1rem; }
+    .cta-disclaimer { font-size: 0.72rem; color: #9ca3af; margin-top: 12px; line-height: 1.5; }
+
+    .email-box { background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-top: 16px; }
+    .email-box h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+    .email-box p { font-size: 0.8rem; color: #6b7280; margin-bottom: 12px; }
+    .email-form { display: flex; gap: 8px; }
+    @media (max-width: 500px) { .email-form { flex-direction: column; } }
+    .email-input { flex: 1; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none; }
+    .email-input:focus { border-color: #0F6E56; }
+    .email-btn { padding: 10px 18px; background: #0F6E56; color: #fff; border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .email-success { font-size: 0.875rem; color: #0F6E56; font-weight: 500; display: none; padding: 10px 0; }
+
+    .risk-warning { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 14px 16px; margin-top: 20px; font-size: 0.75rem; color: #78350f; line-height: 1.6; }
+    .risk-warning strong { display: block; margin-bottom: 4px; }
+    .seo-content { margin-top: 40px; padding-top: 32px; border-top: 1px solid #e5e7eb; }
+    .seo-content h2 { font-size: 1.3rem; font-weight: 700; color: #111; margin-bottom: 12px; }
+    .seo-content h3 { font-size: 1rem; font-weight: 600; color: #111; margin: 20px 0 8px; }
+    .seo-content p { font-size: 0.9rem; color: #4b5563; margin-bottom: 12px; line-height: 1.7; }
+    .seo-content ul { padding-left: 20px; margin-bottom: 12px; }
+    .seo-content li { font-size: 0.9rem; color: #4b5563; margin-bottom: 6px; line-height: 1.6; }
+    .other-tools { margin-top: 40px; }
+    .other-tools h3 { font-size: 1rem; font-weight: 600; margin-bottom: 14px; }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+    .tool-link { display: block; padding: 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; text-decoration: none; color: #111; font-size: 0.875rem; font-weight: 500; transition: border-color .15s; }
+    .tool-link:hover { border-color: #0F6E56; color: #0F6E56; }
+    .tool-link .tool-icon { font-size: 1.2rem; margin-bottom: 6px; display: block; }
+    footer { background: #fff; border-top: 1px solid #e5e7eb; padding: 24px; text-align: center; font-size: 0.78rem; color: #9ca3af; margin-top: 40px; }
+    footer a { color: #9ca3af; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">DecisionCalc</a>
+  <span class="nav-tag">Free UK Tools</span>
+</nav>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="/">Home</a> › Car Repair vs Replace Calculator
+  </div>
+
+  <div class="page-header">
+    <h1>Car Repair vs Replace Calculator UK 2026</h1>
+    <p>Should you fix your current car or cut your losses and buy a new one? Enter your details for a data-driven recommendation with full cost breakdown.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Your Current Car</div>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="repairCost">Repair quote</label>
+        <div class="hint">Total cost of the repair needed</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="repairCost" value="2500" min="0" max="50000">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="carValue">Current car value</label>
+        <div class="hint">What it would sell for now (check AutoTrader)</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="carValue" value="6000" min="0" max="200000">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="carAge">Car age</label>
+        <div class="range-wrap">
+          <div class="range-val" id="carAgeVal">8 years</div>
+          <input type="range" id="carAge" min="1" max="25" value="8" oninput="document.getElementById('carAgeVal').textContent=this.value+' years'">
+          <div class="range-labels"><span>1 yr</span><span>25 yrs</span></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="mileage">Current mileage</label>
+        <div class="range-wrap">
+          <div class="range-val" id="mileageVal">85,000 miles</div>
+          <input type="range" id="mileage" min="0" max="250000" step="5000" value="85000" oninput="document.getElementById('mileageVal').textContent=parseInt(this.value).toLocaleString('en-GB')+' miles'">
+          <div class="range-labels"><span>0</span><span>250,000</span></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="annualMileage">Annual mileage</label>
+        <div class="range-wrap">
+          <div class="range-val" id="annualMileageVal">10,000 miles/yr</div>
+          <input type="range" id="annualMileage" min="1000" max="50000" step="1000" value="10000" oninput="document.getElementById('annualMileageVal').textContent=parseInt(this.value).toLocaleString('en-GB')+' miles/yr'">
+          <div class="range-labels"><span>1,000</span><span>50,000</span></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="monthlyRunning">Monthly running costs</label>
+        <div class="hint">Insurance, tax, fuel, servicing</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="monthlyRunning" value="280" min="0" max="5000">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="reliability">Reliability since repair?</label>
+        <div class="hint">Your honest assessment</div>
+        <select id="reliability">
+          <option value="good">Likely good — single issue fixed</option>
+          <option value="uncertain" selected>Uncertain — car is getting old</option>
+          <option value="poor">Poor — multiple issues expected</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="finance">Outstanding finance</label>
+        <div class="hint">Any HP/PCP remaining (enter 0 if none)</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="finance" value="0" min="0" max="100000">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card-title" style="margin-top:28px">Replacement Car (if you were to buy)</div>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="replaceCost">Replacement car budget</label>
+        <div class="hint">What you'd spend on a replacement</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="replaceCost" value="14000" min="0" max="500000">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="replaceMonthly">Replacement monthly costs</label>
+        <div class="hint">New insurance, tax, fuel estimate</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="replaceMonthly" value="380" min="0" max="5000">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="horizon">How long do you plan to keep it?</label>
+        <div class="range-wrap">
+          <div class="range-val" id="horizonVal">3 years</div>
+          <input type="range" id="horizon" min="1" max="10" value="3" oninput="document.getElementById('horizonVal').textContent=this.value+' year'+(this.value>1?'s':'')">
+          <div class="range-labels"><span>1 yr</span><span>10 yrs</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="btn" onclick="calculateAndScroll()">Get my recommendation →</button>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+
+    <!-- Verdict hero -->
+    <div class="verdict-hero" id="verdictHero">
+      <div class="verdict-icon" id="verdictIcon"></div>
+      <div class="verdict-title" id="verdictTitle"></div>
+      <div class="verdict-sub" id="verdictSub"></div>
+    </div>
+
+    <!-- Score meter -->
+    <div class="card">
+      <div class="card-title">Decision score</div>
+      <div class="score-section">
+        <div class="score-label"><span>Repair score</span><span id="repairScoreLabel">—</span></div>
+        <div class="score-track">
+          <div class="score-fill score-repair" id="repairBar" style="width:0%"></div>
+        </div>
+        <div class="score-ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+      </div>
+      <div style="margin-top:16px" class="score-section">
+        <div class="score-label"><span>Replace score</span><span id="replaceScoreLabel">—</span></div>
+        <div class="score-track">
+          <div class="score-fill score-replace" id="replaceBar" style="width:0%"></div>
+        </div>
+        <div class="score-ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+      </div>
+      <p style="font-size:0.78rem;color:#9ca3af;margin-top:12px">Score based on: repair-to-value ratio, mileage, reliability, cost-per-mile over your chosen horizon, and depreciation.</p>
+    </div>
+
+    <!-- Cost comparison -->
+    <div class="comparison-grid">
+      <div class="comp-box keep">
+        <div class="label">🔧 Keep &amp; repair</div>
+        <div class="row"><span class="k">Repair cost</span><span class="v" id="c-repair">—</span></div>
+        <div class="row"><span class="k">Running costs</span><span class="v" id="c-running">—</span></div>
+        <div class="row"><span class="k">Est. further repairs</span><span class="v" id="c-further">—</span></div>
+        <div class="row"><span class="k">Depreciation</span><span class="v" id="c-dep1">—</span></div>
+        <div class="total-row"><span>Total over <span id="horizonDisp1">—</span></span><span class="v" id="c-total1">—</span></div>
+      </div>
+      <div class="comp-box sell">
+        <div class="label">🚗 Replace</div>
+        <div class="row"><span class="k">Replacement cost</span><span class="v" id="r-cost">—</span></div>
+        <div class="row"><span class="k">Running costs</span><span class="v" id="r-running">—</span></div>
+        <div class="row"><span class="k">Less: sale of current</span><span class="v" id="r-sale">—</span></div>
+        <div class="row"><span class="k">Depreciation</span><span class="v" id="r-dep">—</span></div>
+        <div class="total-row"><span>Total over <span id="horizonDisp2">—</span></span><span class="v" id="r-total">—</span></div>
+      </div>
+    </div>
+
+    <!-- Key factors -->
+    <div class="card">
+      <div class="card-title">Key factors in this decision</div>
+      <div class="factor-list" id="factorList"></div>
+    </div>
+
+    <!-- Full breakdown -->
+    <div class="card">
+      <div class="card-title">Full breakdown</div>
+      <div class="breakdown-row"><span class="key">Repair cost as % of car value</span><span class="val" id="repairPct">—</span></div>
+      <div class="breakdown-row"><span class="key">50% rule (repair &lt; 50% value = repair)</span><span class="val" id="fiftyRule">—</span></div>
+      <div class="breakdown-row"><span class="key">Cost per mile — keep &amp; repair</span><span class="val" id="cpmKeep">—</span></div>
+      <div class="breakdown-row"><span class="key">Cost per mile — replace</span><span class="val" id="cpmReplace">—</span></div>
+      <div class="breakdown-row"><span class="key">Net cost of replacement</span><span class="val" id="netReplace">—</span></div>
+      <div class="breakdown-row"><span class="key">Months to break even on replacement</span><span class="val" id="breakeven">—</span></div>
+    </div>
+
+    <!-- CTA — changes based on verdict -->
+    <div class="cta-box" id="ctaBox">
+      <h3 id="ctaTitle"></h3>
+      <p id="ctaDesc"></p>
+      <div class="cta-links" id="ctaLinks"></div>
+      <div class="cta-disclaimer">This site contains affiliate links. We may earn a commission when you click links to our partners at no extra cost to you. Always do your own research before making a purchase decision.</div>
+    </div>
+
+    <div class="email-box">
+      <h4>🚗 Get the full car decision checklist</h4>
+      <p>We'll email you a free PDF: 12 questions to ask before you decide — including how to spot a mechanic's inflated quote.</p>
+      <div class="email-form">
+        <input type="email" class="email-input" id="emailInput" placeholder="your@email.com">
+        <button class="email-btn" onclick="submitEmail()">Send me the checklist</button>
+      </div>
+      <div class="email-success" id="emailSuccess">✓ Checklist on its way — check your inbox!</div>
+    </div>
+
+    <div class="risk-warning">
+      <strong>Disclaimer</strong>
+      This calculator provides a general financial estimate and should not be taken as professional mechanical or financial advice. Actual repair costs, reliability and depreciation will vary. Always get multiple quotes from qualified mechanics. Vehicle values are estimates — check AutoTrader or Glass's Guide for current market prices.
+    </div>
+
+  </div>
+
+  <!-- SEO content -->
+  <div class="seo-content">
+    <h2>Should I repair or replace my car? The UK guide for 2026</h2>
+    <p>Facing a large repair bill is one of the most stressful car ownership moments. The gut reaction is often to replace the car — but that's not always the right financial decision. This calculator and guide will help you make the choice based on numbers, not emotion.</p>
+
+    <h3>The 50% rule — a useful starting point</h3>
+    <p>The most widely-cited rule of thumb is the 50% rule: if the repair cost exceeds 50% of the car's current market value, you should seriously consider replacing it. So if your car is worth £5,000 and you're facing a £2,800 repair bill, the maths starts to favour replacement. However, this rule ignores several important factors including reliability, mileage, running costs, and how long you plan to keep the vehicle.</p>
+
+    <h3>When repairing is the right choice</h3>
+    <ul>
+      <li>The repair cost is under 30% of the car's value</li>
+      <li>The car has a strong service history and has been reliable until this point</li>
+      <li>The repair fixes a single, well-understood problem (not a symptom of broader wear)</li>
+      <li>You have no outstanding finance on the vehicle</li>
+      <li>The replacement cost would require taking on new debt</li>
+      <li>The car has relatively low mileage for its age</li>
+    </ul>
+
+    <h3>When replacing is the right choice</h3>
+    <ul>
+      <li>The repair cost is over 50% of the car's current value</li>
+      <li>The car has had multiple expensive repairs in the past 12 months</li>
+      <li>High mileage means further repairs are likely regardless of this fix</li>
+      <li>The repair is for a safety-critical system (brakes, steering, suspension)</li>
+      <li>Running costs are high and a newer car would be significantly cheaper to run</li>
+      <li>You need a more reliable car for work or family commitments</li>
+    </ul>
+
+    <h3>Don't forget the hidden costs of replacing</h3>
+    <p>The sticker price of a replacement car is rarely the true cost. Factor in: higher insurance for a newer vehicle, road tax changes, the cost of financing if you take a loan or PCP, any early settlement fees on existing finance, and the fact that a new-to-you car will also depreciate. Our calculator includes all of these in the total cost of replacement figure.</p>
+
+    <h3>Get a second opinion on the repair quote</h3>
+    <p>Before making any decision, always get at least two quotes from independent mechanics. Main dealer quotes are typically 30–60% higher than independent specialists for the same work. The AA and RAC also offer vehicle inspection services if you want a professional assessment of your car's overall condition before deciding whether to repair or replace.</p>
+  </div>
+
+  <div class="other-tools">
+    <h3>Other free DecisionCalc tools</h3>
+    <div class="tools-grid">
+      <a class="tool-link" href="/isa-sipp-calculator.html">
+        <span class="tool-icon">📈</span>
+        ISA vs SIPP Calculator
+      </a>
+      <a class="tool-link" href="/mortgage-overpayment-calculator.html">
+        <span class="tool-icon">🏠</span>
+        Mortgage Overpayment
+      </a>
+      <a class="tool-link" href="/energy-bill-optimiser.html">
+        <span class="tool-icon">⚡</span>
+        Energy Bill Optimiser
+      </a>
+      <a class="tool-link" href="/trading-journal.html">
+        <span class="tool-icon">📊</span>
+        Free Trading Journal
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 DecisionCalc · <a href="/">Home</a> · Free UK financial calculators · Not financial advice · <a href="mailto:hello@decisioncalc.co.uk">hello@decisioncalc.co.uk</a></p>
+  <p style="margin-top:6px">This site contains affiliate links. We may earn a commission when you click links to our partners at no extra cost to you.</p>
+</footer>
+
+<script>
+  function fmt(n) { return '£' + Math.round(n).toLocaleString('en-GB'); }
+
+  function calculate() {
+    const repairCost    = parseFloat(document.getElementById('repairCost').value)    || 0;
+    const carValue      = parseFloat(document.getElementById('carValue').value)      || 1;
+    const carAge        = parseInt(document.getElementById('carAge').value)          || 0;
+    const mileage       = parseInt(document.getElementById('mileage').value)         || 0;
+    const annualMileage = parseInt(document.getElementById('annualMileage').value)   || 10000;
+    const monthlyRun    = parseFloat(document.getElementById('monthlyRunning').value)|| 0;
+    const reliability   = document.getElementById('reliability').value;
+    const finance       = parseFloat(document.getElementById('finance').value)       || 0;
+    const replaceCost   = parseFloat(document.getElementById('replaceCost').value)   || 0;
+    const replaceMonthly= parseFloat(document.getElementById('replaceMonthly').value)|| 0;
+    const horizon       = parseInt(document.getElementById('horizon').value)         || 3;
+
+    const horizonMonths = horizon * 12;
+
+    // Further repair multiplier based on reliability + age + mileage
+    const reliabilityMult = reliability === 'good' ? 0.3 : reliability === 'uncertain' ? 0.6 : 1.2;
+    const ageFactor = Math.min(carAge / 15, 1);
+    const mileageFactor = Math.min(mileage / 150000, 1);
+    const furtherRepairs = repairCost * reliabilityMult * (0.5 + ageFactor * 0.5 + mileageFactor * 0.3);
+
+    // Depreciation on current car (older cars depreciate less per year)
+    const currentDepRate = Math.max(0.03, 0.15 - carAge * 0.01);
+    const dep1 = carValue * (1 - Math.pow(1 - currentDepRate, horizon));
+
+    // Total cost to keep
+    const keepTotal = repairCost + (monthlyRun * horizonMonths) + furtherRepairs + dep1;
+
+    // Net cost to replace
+    const netReplaceCost = replaceCost - (carValue - finance);
+    // New car depreciation (~15% yr1, ~10% subsequent for average used car)
+    const replaceDep = replaceCost * (1 - Math.pow(0.88, horizon));
+    const replaceTotal = Math.max(netReplaceCost, 0) + (replaceMonthly * horizonMonths) + replaceDep;
+
+    // Cost per mile
+    const totalMiles = annualMileage * horizon;
+    const cpmKeep    = totalMiles > 0 ? keepTotal / totalMiles : 0;
+    const cpmReplace = totalMiles > 0 ? replaceTotal / totalMiles : 0;
+
+    // Break-even months
+    const monthlySaving = monthlyRun - replaceMonthly;
+    const breakeven = monthlySaving > 0 ? Math.ceil(netReplaceCost / monthlySaving) : 999;
+
+    // Repair % of value
+    const repairPct = (repairCost / carValue) * 100;
+
+    // Scoring (0–100, higher = more appropriate choice)
+    let repairScore = 50;
+    let replaceScore = 50;
+
+    // Repair/value ratio
+    if (repairPct < 20)       { repairScore += 25; replaceScore -= 10; }
+    else if (repairPct < 35)  { repairScore += 10; }
+    else if (repairPct < 50)  { repairScore -= 5;  replaceScore += 10; }
+    else if (repairPct < 75)  { repairScore -= 15; replaceScore += 20; }
+    else                       { repairScore -= 25; replaceScore += 30; }
+
+    // Reliability
+    if (reliability === 'good')      { repairScore += 15; replaceScore -= 10; }
+    else if (reliability === 'poor') { repairScore -= 20; replaceScore += 20; }
+
+    // Mileage
+    if (mileage > 120000)      { repairScore -= 15; replaceScore += 10; }
+    else if (mileage < 60000)  { repairScore += 10; replaceScore -= 5; }
+
+    // Age
+    if (carAge > 12)           { repairScore -= 10; replaceScore += 10; }
+    else if (carAge < 5)       { repairScore += 10; replaceScore -= 5; }
+
+    // Cost comparison over horizon
+    if (keepTotal < replaceTotal * 0.8) { repairScore += 15; replaceScore -= 15; }
+    else if (replaceTotal < keepTotal * 0.8) { repairScore -= 15; replaceScore += 15; }
+
+    // Finance penalty for replace
+    if (finance > carValue * 0.5) { repairScore += 10; replaceScore -= 10; }
+
+    repairScore  = Math.min(100, Math.max(5, repairScore));
+    replaceScore = Math.min(100, Math.max(5, replaceScore));
+
+    // Verdict
+    const hero  = document.getElementById('verdictHero');
+    const icon  = document.getElementById('verdictIcon');
+    const title = document.getElementById('verdictTitle');
+    const sub   = document.getElementById('verdictSub');
+    const diff  = Math.abs(repairScore - replaceScore);
+
+    if (repairScore > replaceScore + 10) {
+      hero.className  = 'verdict-hero repair';
+      icon.textContent = '🔧';
+      title.textContent = 'Repair your car';
+      sub.textContent  = 'The numbers favour repairing. Over ' + horizon + ' year' + (horizon > 1 ? 's' : '') + ' you save an estimated ' + fmt(replaceTotal - keepTotal) + ' compared to replacing. The repair cost is manageable relative to the car\'s value.';
+    } else if (replaceScore > repairScore + 10) {
+      hero.className  = 'verdict-hero replace';
+      icon.textContent = '🚗';
+      title.textContent = 'Consider replacing';
+      sub.textContent  = 'The numbers lean toward replacement. The repair cost is high relative to the car\'s value and future reliability looks uncertain. A newer car could be cheaper overall over ' + horizon + ' years.';
+    } else {
+      hero.className  = 'verdict-hero marginal';
+      icon.textContent = '⚖️';
+      title.textContent = 'It\'s marginal — your call';
+      sub.textContent  = 'The costs are close over ' + horizon + ' years. Your decision should hinge on how much you trust the car after this repair and whether you need the reliability of a newer vehicle.';
+    }
+
+    // Score bars
+    document.getElementById('repairBar').style.width  = repairScore  + '%';
+    document.getElementById('replaceBar').style.width = replaceScore + '%';
+    document.getElementById('repairScoreLabel').textContent  = repairScore  + '/100';
+    document.getElementById('replaceScoreLabel').textContent = replaceScore + '/100';
+
+    // Comparison boxes
+    const hStr = horizon + ' year' + (horizon > 1 ? 's' : '');
+    document.getElementById('horizonDisp1').textContent = hStr;
+    document.getElementById('horizonDisp2').textContent = hStr;
+    document.getElementById('c-repair').textContent   = fmt(repairCost);
+    document.getElementById('c-running').textContent  = fmt(monthlyRun * horizonMonths);
+    document.getElementById('c-further').textContent  = fmt(furtherRepairs);
+    document.getElementById('c-dep1').textContent     = fmt(dep1);
+    document.getElementById('c-total1').textContent   = fmt(keepTotal);
+    document.getElementById('r-cost').textContent     = fmt(replaceCost);
+    document.getElementById('r-running').textContent  = fmt(replaceMonthly * horizonMonths);
+    document.getElementById('r-sale').textContent     = '−' + fmt(Math.max(carValue - finance, 0));
+    document.getElementById('r-dep').textContent      = fmt(replaceDep);
+    document.getElementById('r-total').textContent    = fmt(replaceTotal);
+
+    // Key factors
+    const factors = [];
+    if (repairPct < 30) factors.push({ type:'good', icon:'✅', title:'Repair cost is low vs car value (' + Math.round(repairPct) + '%)', desc:'Below 30% is generally considered a clear case to repair. The 50% rule of thumb strongly favours keeping this car.' });
+    else if (repairPct > 50) factors.push({ type:'bad', icon:'⚠️', title:'Repair cost is high vs car value (' + Math.round(repairPct) + '%)', desc:'Over 50% of the car\'s value is a red flag. Many mechanics and financial advisers consider this a tipping point toward replacement.' });
+    else factors.push({ type:'neutral', icon:'🔶', title:'Repair cost is moderate vs car value (' + Math.round(repairPct) + '%)', desc:'At 30–50% of car value, this is in the grey zone. Other factors like reliability and running costs should guide your decision.' });
+
+    if (reliability === 'poor') factors.push({ type:'bad', icon:'⚠️', title:'Reliability is poor — further costs likely', desc:'If you expect more repairs, repairing now may just delay the inevitable. Factor in the cost of likely future repairs.' });
+    else if (reliability === 'good') factors.push({ type:'good', icon:'✅', title:'Reliability is good — likely one-off issue', desc:'A single repair on an otherwise reliable car is a strong argument for keeping it. The repair fixes a known problem.' });
+    else factors.push({ type:'neutral', icon:'🔶', title:'Reliability is uncertain', desc:'On an ageing car, one repair often precedes others. Budget for potential further costs over the next 12 months.' });
+
+    if (mileage > 120000) factors.push({ type:'bad', icon:'⚠️', title:'High mileage (' + parseInt(mileage).toLocaleString('en-GB') + ' miles)', desc:'Above 100,000 miles, wear and tear accelerates across multiple systems. A repair now may not prevent other issues soon.' });
+    else if (mileage < 50000) factors.push({ type:'good', icon:'✅', title:'Low mileage for age (' + parseInt(mileage).toLocaleString('en-GB') + ' miles)', desc:'Low mileage is a positive sign. Many high-mileage issues won\'t be a concern yet and the car has useful life remaining.' });
+
+    if (finance > 0) factors.push({ type:'neutral', icon:'💳', title: 'Outstanding finance: ' + fmt(finance), desc:'You\'ll need to settle this before selling. Reduce your equity in the car to ' + fmt(Math.max(carValue - finance, 0)) + ' net. Check for early settlement fees.' });
+
+    if (breakeven < 24 && breakeven < 999) factors.push({ type:'good', icon:'📅', title:'Replacement breaks even in ' + breakeven + ' months', desc:'If the new car\'s lower running costs cover the net purchase cost within ' + breakeven + ' months, replacing has a clear financial case.' });
+    else if (breakeven > 60 || breakeven === 999) factors.push({ type:'bad', icon:'📅', title:'Replacement takes a very long time to break even', desc:'The lower running costs of a newer car don\'t justify the replacement cost over your planned ownership horizon.' });
+
+    const fl = document.getElementById('factorList');
+    fl.innerHTML = factors.map(f => `
+      <div class="factor-item ${f.type}">
+        <div class="factor-icon">${f.icon}</div>
+        <div class="factor-text">
+          <div class="factor-title">${f.title}</div>
+          <div class="factor-desc">${f.desc}</div>
+        </div>
+      </div>`).join('');
+
+    // Breakdown
+    document.getElementById('repairPct').textContent  = Math.round(repairPct) + '% of car value';
+    document.getElementById('repairPct').className    = 'val ' + (repairPct < 50 ? 'green' : 'red');
+    document.getElementById('fiftyRule').textContent  = repairPct < 50 ? '✓ Under 50% — repair favoured' : '✗ Over 50% — replacement worth considering';
+    document.getElementById('fiftyRule').className    = 'val ' + (repairPct < 50 ? 'green' : 'red');
+    document.getElementById('cpmKeep').textContent    = cpmKeep.toFixed(1) + 'p per mile';
+    document.getElementById('cpmReplace').textContent = cpmReplace.toFixed(1) + 'p per mile';
+    document.getElementById('netReplace').textContent = fmt(Math.max(netReplaceCost, 0)) + ' (after selling current car)';
+    document.getElementById('breakeven').textContent  = breakeven < 999 ? breakeven + ' months' : 'Not within your horizon';
+
+    // CTA
+    const ctaBox   = document.getElementById('ctaBox');
+    const ctaTitle = document.getElementById('ctaTitle');
+    const ctaDesc  = document.getElementById('ctaDesc');
+    const ctaLinks = document.getElementById('ctaLinks');
+
+    if (repairScore >= replaceScore) {
+      ctaBox.className = 'cta-box';
+      ctaTitle.textContent = 'Get a second repair quote first';
+      ctaDesc.textContent  = 'Before paying anything, get at least two quotes. Independent mechanics are typically 30–60% cheaper than main dealers for the same work. Warranty cover and breakdown protection are also worth comparing.';
+      ctaLinks.innerHTML = `
+        <a class="cta-link primary" href="https://www.motoreasy.com" target="_blank" rel="noopener sponsored">
+          <span>Protect your repaired car — compare warranty cover</span><span class="arrow">→</span>
+        </a>
+        <a class="cta-link secondary" href="https://www.rac.co.uk/breakdown-cover" target="_blank" rel="noopener sponsored">
+          <span>Get RAC breakdown cover from £4.99/month</span><span class="arrow">→</span>
+        </a>`;
+    } else {
+      ctaBox.className = 'cta-box replace-cta';
+      ctaTitle.textContent = 'Ready to find your next car?';
+      ctaDesc.textContent  = 'Compare thousands of used cars from dealers and private sellers. Use Carwow to get dealer prices without the haggling, or browse AutoTrader for the full UK market.';
+      ctaLinks.innerHTML = `
+        <a class="cta-link primary blue" href="https://www.carwow.co.uk" target="_blank" rel="noopener sponsored">
+          <span>Get dealer prices with Carwow — no haggling</span><span class="arrow">→</span>
+        </a>
+        <a class="cta-link secondary" href="https://www.autotrader.co.uk" target="_blank" rel="noopener sponsored">
+          <span>Search all UK used cars on AutoTrader</span><span class="arrow">→</span>
+        </a>`;
+    }
+
+    document.getElementById('results').classList.add('show');
+  }
+
+  function calculateAndScroll() {
+    calculate();
+    const results = document.getElementById('results');
+    if (results.classList.contains('show')) {
+      results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput').value;
+    if (!email || !email.includes('@')) { document.getElementById('emailInput').style.borderColor = '#ef4444'; return; }
+    document.getElementById('emailInput').style.borderColor = '#d1d5db';
+    document.querySelector('.email-form').style.display = 'none';
+    document.getElementById('emailSuccess').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
