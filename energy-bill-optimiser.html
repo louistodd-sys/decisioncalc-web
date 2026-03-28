@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Energy Bill Optimiser UK 2026 | DecisionCalc</title>
+  <meta name="description" content="Free UK energy bill calculator. Find out how much you could save by switching supplier, adding solar panels, or changing your usage habits. Get a personalised saving plan instantly.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; }
+    a { color: #0F6E56; }
+    nav { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+    .nav-brand { font-weight: 700; font-size: 1.1rem; color: #1a1a1a; text-decoration: none; }
+    .nav-tag { font-size: 0.75rem; background: #f0fdf4; color: #0F6E56; padding: 2px 10px; border-radius: 20px; border: 1px solid #bbf7d0; }
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+    .breadcrumb { font-size: 0.8rem; color: #6b7280; margin-bottom: 20px; }
+    .breadcrumb a { color: #6b7280; text-decoration: none; }
+    .breadcrumb a:hover { color: #0F6E56; }
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 1.9rem; font-weight: 700; color: #111; margin-bottom: 8px; }
+    .page-header p { color: #4b5563; font-size: 1rem; max-width: 620px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 28px; margin-bottom: 20px; }
+    .card-title { font-size: 1rem; font-weight: 600; color: #111; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    .card-title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: #f59e0b; border-radius: 2px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.875rem; font-weight: 500; color: #374151; }
+    .form-group .hint { font-size: 0.75rem; color: #9ca3af; }
+    .input-wrap { position: relative; }
+    .input-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: #6b7280; pointer-events: none; }
+    .input-suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: #9ca3af; pointer-events: none; }
+    input[type="number"], select { width: 100%; padding: 10px 56px 10px 28px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.95rem; color: #111; background: #fff; outline: none; transition: border-color .15s; -moz-appearance: textfield; }
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input[type="number"]:focus, select:focus { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,.12); }
+    select { padding-left: 12px; padding-right: 12px; cursor: pointer; }
+    .range-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .range-val { font-size: 0.875rem; font-weight: 600; color: #f59e0b; text-align: right; }
+    .range-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: #9ca3af; }
+    input[type="range"] { width: 100%; padding: 0; height: 6px; -webkit-appearance: none; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #f59e0b; border-radius: 50%; cursor: pointer; }
+    .checkbox-group { display: flex; flex-direction: column; gap: 8px; }
+    .checkbox-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .checkbox-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: #f59e0b; cursor: pointer; flex-shrink: 0; }
+    .checkbox-item span { font-size: 0.875rem; color: #374151; }
+    .btn { width: 100%; padding: 14px; background: #f59e0b; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 24px; transition: background .15s; }
+    .btn:hover { background: #d97706; }
+    .results { display: none; }
+    .results.show { display: block; }
+
+    /* Hero saving */
+    .saving-hero { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 14px; padding: 32px; text-align: center; color: #fff; margin-bottom: 20px; }
+    .saving-hero .eyebrow { font-size: 0.8rem; text-transform: uppercase; letter-spacing: .08em; opacity: .85; margin-bottom: 8px; }
+    .saving-hero .big-number { font-size: 3.2rem; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .saving-hero .sub { font-size: 1rem; opacity: .9; margin-bottom: 20px; }
+    .saving-hero hr { border: none; border-top: 1px solid rgba(255,255,255,.25); margin-bottom: 20px; }
+    .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 500px) { .hero-stats { grid-template-columns: 1fr 1fr; } }
+    .hero-stat .stat-label { font-size: 0.72rem; opacity: .8; margin-bottom: 4px; }
+    .hero-stat .stat-val { font-size: 1.3rem; font-weight: 700; }
+
+    /* Saving cards */
+    .saving-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    @media (max-width: 560px) { .saving-cards { grid-template-columns: 1fr; } }
+    .saving-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px; }
+    .saving-card .sc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .saving-card .sc-icon { font-size: 1.4rem; }
+    .saving-card .sc-title { font-size: 0.875rem; font-weight: 600; color: #111; }
+    .saving-card .sc-amount { font-size: 1.6rem; font-weight: 700; color: #f59e0b; margin-bottom: 4px; }
+    .saving-card .sc-desc { font-size: 0.78rem; color: #6b7280; line-height: 1.5; }
+    .saving-card .sc-effort { font-size: 0.72rem; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-top: 8px; }
+    .effort-easy { background: #f0fdf4; color: #0F6E56; }
+    .effort-medium { background: #fffbeb; color: #92400e; }
+    .effort-invest { background: #eff6ff; color: #1e40af; }
+
+    /* Usage breakdown */
+    .usage-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .usage-label { font-size: 0.8rem; color: #4b5563; min-width: 120px; }
+    .usage-track { flex: 1; height: 20px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
+    .usage-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 0.72rem; font-weight: 600; color: #fff; }
+    .usage-val { font-size: 0.8rem; min-width: 56px; text-align: right; color: #4b5563; font-weight: 500; }
+
+    .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 0.875rem; }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-row .key { color: #4b5563; }
+    .breakdown-row .val { font-weight: 600; color: #111; }
+    .breakdown-row .val.green { color: #0F6E56; }
+    .breakdown-row .val.amber { color: #d97706; }
+    .breakdown-row .val.red { color: #dc2626; }
+
+    .cta-stack { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .cta-box { background: #fff; border: 1.5px solid #f59e0b; border-radius: 12px; padding: 20px 24px; }
+    .cta-box h3 { font-size: 1rem; font-weight: 600; color: #111; margin-bottom: 4px; }
+    .cta-box p { font-size: 0.85rem; color: #4b5563; margin-bottom: 14px; }
+    .cta-links { display: flex; flex-direction: column; gap: 8px; }
+    .cta-link { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 0.875rem; transition: opacity .15s; }
+    .cta-link:hover { opacity: .88; }
+    .cta-link.primary { background: #f59e0b; color: #fff; }
+    .cta-link.primary.green { background: #0F6E56; }
+    .cta-link.primary.blue { background: #1d4ed8; }
+    .cta-link.secondary { background: #f9fafb; color: #1a1a1a; border: 1px solid #e5e7eb; }
+    .cta-link .arrow { font-size: 1rem; }
+    .cta-disclaimer { font-size: 0.72rem; color: #9ca3af; margin-top: 10px; line-height: 1.5; }
+
+    .email-box { background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-top: 4px; }
+    .email-box h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+    .email-box p { font-size: 0.8rem; color: #6b7280; margin-bottom: 12px; }
+    .email-form { display: flex; gap: 8px; }
+    @media (max-width: 500px) { .email-form { flex-direction: column; } }
+    .email-input { flex: 1; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none; }
+    .email-input:focus { border-color: #f59e0b; }
+    .email-btn { padding: 10px 18px; background: #f59e0b; color: #fff; border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .email-success { font-size: 0.875rem; color: #0F6E56; font-weight: 500; display: none; padding: 10px 0; }
+
+    .risk-warning { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 14px 16px; margin-top: 20px; font-size: 0.75rem; color: #78350f; line-height: 1.6; }
+    .risk-warning strong { display: block; margin-bottom: 4px; }
+    .seo-content { margin-top: 40px; padding-top: 32px; border-top: 1px solid #e5e7eb; }
+    .seo-content h2 { font-size: 1.3rem; font-weight: 700; color: #111; margin-bottom: 12px; }
+    .seo-content h3 { font-size: 1rem; font-weight: 600; color: #111; margin: 20px 0 8px; }
+    .seo-content p { font-size: 0.9rem; color: #4b5563; margin-bottom: 12px; line-height: 1.7; }
+    .seo-content ul { padding-left: 20px; margin-bottom: 12px; }
+    .seo-content li { font-size: 0.9rem; color: #4b5563; margin-bottom: 6px; line-height: 1.6; }
+    .other-tools { margin-top: 40px; }
+    .other-tools h3 { font-size: 1rem; font-weight: 600; margin-bottom: 14px; }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+    .tool-link { display: block; padding: 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; text-decoration: none; color: #111; font-size: 0.875rem; font-weight: 500; transition: border-color .15s; }
+    .tool-link:hover { border-color: #f59e0b; color: #d97706; }
+    .tool-link .tool-icon { font-size: 1.2rem; margin-bottom: 6px; display: block; }
+    footer { background: #fff; border-top: 1px solid #e5e7eb; padding: 24px; text-align: center; font-size: 0.78rem; color: #9ca3af; margin-top: 40px; }
+    footer a { color: #9ca3af; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">DecisionCalc</a>
+  <span class="nav-tag">Free UK Tools</span>
+</nav>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="/">Home</a> › Energy Bill Optimiser
+  </div>
+
+  <div class="page-header">
+    <h1>Energy Bill Optimiser UK 2026</h1>
+    <p>Find out exactly how much you could save on your energy bills — from switching supplier to solar panels and smart home upgrades. Get a personalised saving plan in seconds.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Your Home</div>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Property type</label>
+        <select id="propType">
+          <option value="flat">Flat / apartment</option>
+          <option value="terrace">Terraced house</option>
+          <option value="semi" selected>Semi-detached house</option>
+          <option value="detached">Detached house</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Number of bedrooms</label>
+        <select id="bedrooms">
+          <option value="1">1 bedroom</option>
+          <option value="2">2 bedrooms</option>
+          <option value="3" selected>3 bedrooms</option>
+          <option value="4">4 bedrooms</option>
+          <option value="5">5+ bedrooms</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Number of people in household</label>
+        <div class="range-wrap">
+          <div class="range-val" id="occupantsVal">3 people</div>
+          <input type="range" id="occupants" min="1" max="8" value="3" oninput="document.getElementById('occupantsVal').textContent=this.value+(this.value==1?' person':' people')">
+          <div class="range-labels"><span>1</span><span>8</span></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Heating type</label>
+        <select id="heating">
+          <option value="gas" selected>Gas central heating</option>
+          <option value="electric">Electric heating</option>
+          <option value="heatpump">Heat pump</option>
+          <option value="oil">Oil boiler</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Your Current Bills</div>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="monthlyBill">Current monthly energy bill</label>
+        <div class="hint">Combined gas + electricity</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="monthlyBill" value="185" min="0" max="2000">
+          <span class="input-suffix">/month</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>EPC rating (if known)</label>
+        <select id="epc">
+          <option value="A">A (excellent)</option>
+          <option value="B">B (very good)</option>
+          <option value="C">C (good)</option>
+          <option value="D" selected>D (average)</option>
+          <option value="E">E (below average)</option>
+          <option value="F">F (poor)</option>
+          <option value="G">G (very poor)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Smart meter installed?</label>
+        <select id="smartMeter">
+          <option value="yes">Yes — I have a smart meter</option>
+          <option value="no" selected>No smart meter</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Solar panels installed?</label>
+        <select id="solar">
+          <option value="yes">Yes — already have solar</option>
+          <option value="no" selected>No solar panels</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Your Home Features</div>
+    <div class="form-group">
+      <label style="margin-bottom:10px">Which of these do you have? (select all that apply)</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item"><input type="checkbox" id="hasLoft"> <span>Loft insulation</span></label>
+        <label class="checkbox-item"><input type="checkbox" id="hasCavity"> <span>Cavity wall insulation</span></label>
+        <label class="checkbox-item"><input type="checkbox" id="hasDoubleGlaze" checked> <span>Double glazing throughout</span></label>
+        <label class="checkbox-item"><input type="checkbox" id="hasNewBoiler"> <span>Boiler replaced in last 5 years</span></label>
+        <label class="checkbox-item"><input type="checkbox" id="hasEV"> <span>Electric vehicle (EV)</span></label>
+        <label class="checkbox-item"><input type="checkbox" id="hasHeatPump"> <span>Heat pump</span></label>
+      </div>
+    </div>
+    <button class="btn" onclick="calculateAndScroll()">Calculate my savings →</button>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+
+    <!-- Hero -->
+    <div class="saving-hero">
+      <div class="eyebrow">Total potential annual saving</div>
+      <div class="big-number" id="totalSaving">—</div>
+      <div class="sub">across switching, insulation, solar and behaviour changes</div>
+      <hr>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="stat-label">Current annual bill</div><div class="stat-val" id="currentAnnual">—</div></div>
+        <div class="hero-stat"><div class="stat-label">Optimised annual bill</div><div class="stat-val" id="optimisedAnnual">—</div></div>
+        <div class="hero-stat"><div class="stat-label">vs UK average</div><div class="stat-val" id="vsAverage">—</div></div>
+      </div>
+    </div>
+
+    <!-- Saving cards -->
+    <div class="saving-cards" id="savingCards"></div>
+
+    <!-- Usage breakdown -->
+    <div class="card">
+      <div class="card-title">Where your energy goes</div>
+      <div id="usageBreakdown"></div>
+    </div>
+
+    <!-- Full numbers -->
+    <div class="card">
+      <div class="card-title">Full breakdown</div>
+      <div class="breakdown-row"><span class="key">Current monthly bill</span><span class="val" id="bd-monthly">—</span></div>
+      <div class="breakdown-row"><span class="key">Current annual spend</span><span class="val red" id="bd-annual">—</span></div>
+      <div class="breakdown-row"><span class="key">UK average for your home type</span><span class="val" id="bd-avg">—</span></div>
+      <div class="breakdown-row"><span class="key">Your vs average</span><span class="val" id="bd-vs">—</span></div>
+      <div class="breakdown-row"><span class="key">Saving from switching supplier</span><span class="val green" id="bd-switch">—</span></div>
+      <div class="breakdown-row"><span class="key">Saving from smart meter</span><span class="val green" id="bd-smart">—</span></div>
+      <div class="breakdown-row"><span class="key">Saving from insulation improvements</span><span class="val green" id="bd-insulation">—</span></div>
+      <div class="breakdown-row"><span class="key">Saving from behaviour changes</span><span class="val green" id="bd-behaviour">—</span></div>
+      <div class="breakdown-row"><span class="key">Solar panel potential saving</span><span class="val green" id="bd-solar">—</span></div>
+      <div class="breakdown-row"><span class="key">Solar ROI period</span><span class="val amber" id="bd-solarroi">—</span></div>
+    </div>
+
+    <!-- CTAs -->
+    <div class="cta-stack">
+      <div class="cta-box">
+        <h3>⚡ Switch to a better energy tariff</h3>
+        <p>The fastest saving — switching supplier takes 20 minutes and could save hundreds per year. Ofgem-accredited comparison tools show live deals for your postcode.</p>
+        <div class="cta-links">
+          <a class="cta-link primary green" href="https://octopus.energy/join?ref=decisioncalc" target="_blank" rel="noopener sponsored">
+            <span>Switch to Octopus Energy — get £50 bill credit</span><span class="arrow">→</span>
+          </a>
+          <a class="cta-link secondary" href="https://www.uswitch.com/gas-electricity/" target="_blank" rel="noopener sponsored">
+            <span>Compare all energy deals on Uswitch</span><span class="arrow">→</span>
+          </a>
+        </div>
+        <div class="cta-disclaimer">Affiliate link — we may earn a commission. The £50 credit offer is subject to Octopus Energy's terms. Savings estimates based on Ofgem average household data.</div>
+      </div>
+
+      <div class="cta-box" id="solarCta" style="display:none">
+        <h3>☀️ Solar panels — is your home suitable?</h3>
+        <p id="solarCtaDesc">Get a free, no-obligation quote from MCS-certified installers. Most UK homes recoup the cost within 7–10 years and earn money from the Smart Export Guarantee (SEG) thereafter.</p>
+        <div class="cta-links">
+          <a class="cta-link primary" href="https://www.which.co.uk/reviews/solar-panels/article/solar-panels-guide" target="_blank" rel="noopener sponsored">
+            <span>Get free solar quotes from trusted installers</span><span class="arrow">→</span>
+          </a>
+        </div>
+        <div class="cta-disclaimer">This site contains affiliate links. We may earn a commission at no extra cost to you.</div>
+      </div>
+
+      <div class="cta-box" id="insulationCta" style="display:none">
+        <h3>🏠 Free insulation — you may qualify</h3>
+        <p>Under the Great British Insulation Scheme, many UK homeowners qualify for free or heavily subsidised loft and cavity wall insulation. Check your eligibility in 2 minutes.</p>
+        <div class="cta-links">
+          <a class="cta-link primary blue" href="https://www.gov.uk/apply-great-british-insulation-scheme" target="_blank" rel="noopener">
+            <span>Check eligibility — Great British Insulation Scheme</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="email-box">
+      <h4>💡 Get your free home energy saving guide</h4>
+      <p>We'll email you a personalised 10-point plan to cut your bills — including the quick wins you can do this week for free.</p>
+      <div class="email-form">
+        <input type="email" class="email-input" id="emailInput" placeholder="your@email.com">
+        <button class="email-btn" onclick="submitEmail()">Send my plan</button>
+      </div>
+      <div class="email-success" id="emailSuccess">✓ Your plan is on its way — check your inbox!</div>
+    </div>
+
+    <div class="risk-warning">
+      <strong>Important</strong>
+      Saving estimates are based on Ofgem average household consumption data for 2025/26 and typical tariff differentials. Actual savings will vary based on your specific usage, tariff, location, and property. Solar ROI calculations assume south-facing roof with no significant shading and average UK irradiance. Always get multiple quotes before committing to any home improvement.
+    </div>
+
+  </div>
+
+  <!-- SEO content -->
+  <div class="seo-content">
+    <h2>How to reduce your energy bills in the UK in 2026</h2>
+    <p>UK energy bills have remained elevated following the energy crisis of 2022–2023. While prices have stabilised, the average UK household still spends around £1,500–£2,200 per year on gas and electricity. The good news is that a combination of switching, insulation, and smart usage can cut bills by 20–40% for most homes.</p>
+
+    <h3>The fastest way to save: switch your energy supplier</h3>
+    <p>The energy price cap means all suppliers charge the same unit rates, but tariffs with discounts, fixed rates, and smart tariffs can still deliver savings of £100–300 per year for an average household. Green energy suppliers like Octopus Energy consistently rank highly for both price and customer service, and offer time-of-use tariffs like Octopus Agile that can slash bills for flexible households.</p>
+
+    <h3>Smart meters — free and worth it</h3>
+    <p>Smart meters are free to request from your energy supplier and typically reduce bills by 5–10% simply through greater awareness of usage. They also enable access to smart tariffs, including overnight cheap-rate electricity ideal for EV charging and storage heaters. Contact your supplier to book a free installation.</p>
+
+    <h3>Insulation — the biggest long-term saving</h3>
+    <p>Loft insulation and cavity wall insulation are the two highest-impact home improvements for energy efficiency. A poorly insulated home can lose up to 25% of heat through the roof and 35% through walls. The Great British Insulation Scheme offers free or subsidised insulation to households on lower incomes or with an EPC rating of D or below — many homeowners are eligible and don't realise it.</p>
+
+    <h3>Solar panels in 2026 — are they worth it?</h3>
+    <p>With installation costs falling to £5,000–£9,000 for a typical 3-bedroom home and electricity prices remaining high, solar panels now typically pay back within 7–10 years. The Smart Export Guarantee (SEG) also pays you for excess electricity exported to the grid. With a 25-year panel lifespan, the long-term return is compelling for most south-facing properties.</p>
+
+    <h3>Quick wins that cost nothing</h3>
+    <ul>
+      <li>Reduce heating by 1°C — saves approximately £80–100/year</li>
+      <li>Switch to LED bulbs throughout — saves £40–60/year</li>
+      <li>Turn off standby appliances — saves £30–50/year</li>
+      <li>Wash clothes at 30°C instead of 40°C — saves £20–30/year</li>
+      <li>Use a dishwasher at full load on eco mode — saves £20/year vs hand washing</li>
+      <li>Draught-proof doors and windows — saves £50–100/year</li>
+    </ul>
+  </div>
+
+  <div class="other-tools">
+    <h3>Other free DecisionCalc tools</h3>
+    <div class="tools-grid">
+      <a class="tool-link" href="/isa-sipp-calculator.html"><span class="tool-icon">📈</span>ISA vs SIPP Calculator</a>
+      <a class="tool-link" href="/mortgage-overpayment-calculator.html"><span class="tool-icon">🏠</span>Mortgage Overpayment</a>
+      <a class="tool-link" href="/car-repair-vs-replace.html"><span class="tool-icon">🚗</span>Car Repair vs Replace</a>
+      <a class="tool-link" href="/trading-journal.html"><span class="tool-icon">📊</span>Free Trading Journal</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 DecisionCalc · <a href="/">Home</a> · Free UK financial calculators · Not financial advice · <a href="mailto:hello@decisioncalc.co.uk">hello@decisioncalc.co.uk</a></p>
+  <p style="margin-top:6px">This site contains affiliate links. We may earn a commission when you click links to our partners at no extra cost to you.</p>
+</footer>
+
+<script>
+  function fmt(n) { return '£' + Math.round(n).toLocaleString('en-GB'); }
+
+  // UK average annual bills by property type + bedrooms (Ofgem 2025/26 estimates)
+  const avgBills = {
+    flat:     { 1:900,  2:1100, 3:1250, 4:1400, 5:1550 },
+    terrace:  { 1:1050, 2:1250, 3:1500, 4:1750, 5:1950 },
+    semi:     { 1:1150, 2:1400, 3:1700, 4:1950, 5:2200 },
+    detached: { 1:1300, 2:1600, 3:1950, 4:2300, 5:2700 }
+  };
+
+  // Typical usage breakdown % by heating type
+  const usageProfiles = {
+    gas:      [{ label:'Space heating', pct:59, color:'#f59e0b' }, { label:'Hot water', pct:18, color:'#f97316' }, { label:'Cooking', pct:4, color:'#ef4444' }, { label:'Lighting', pct:5, color:'#eab308' }, { label:'Appliances', pct:14, color:'#84cc16' }],
+    electric: [{ label:'Space heating', pct:42, color:'#f59e0b' }, { label:'Hot water', pct:22, color:'#f97316' }, { label:'Cooking', pct:8, color:'#ef4444' }, { label:'Lighting', pct:8, color:'#eab308' }, { label:'Appliances', pct:20, color:'#84cc16' }],
+    heatpump: [{ label:'Space heating', pct:38, color:'#f59e0b' }, { label:'Hot water', pct:20, color:'#f97316' }, { label:'Cooking', pct:6, color:'#ef4444' }, { label:'Lighting', pct:10, color:'#eab308' }, { label:'Appliances', pct:26, color:'#84cc16' }],
+    oil:      [{ label:'Space heating', pct:62, color:'#f59e0b' }, { label:'Hot water', pct:20, color:'#f97316' }, { label:'Cooking', pct:3, color:'#ef4444' }, { label:'Lighting', pct:5, color:'#eab308' }, { label:'Appliances', pct:10, color:'#84cc16' }]
+  };
+
+  function calculate() {
+    const propType   = document.getElementById('propType').value;
+    const bedrooms   = document.getElementById('bedrooms').value;
+    const occupants  = parseInt(document.getElementById('occupants').value);
+    const heating    = document.getElementById('heating').value;
+    const monthly    = parseFloat(document.getElementById('monthlyBill').value) || 0;
+    const epc        = document.getElementById('epc').value;
+    const smartMeter = document.getElementById('smartMeter').value;
+    const solar      = document.getElementById('solar').value;
+    const hasLoft    = document.getElementById('hasLoft').checked;
+    const hasCavity  = document.getElementById('hasCavity').checked;
+    const hasDG      = document.getElementById('hasDoubleGlaze').checked;
+    const hasBoiler  = document.getElementById('hasNewBoiler').checked;
+    const hasEV      = document.getElementById('hasEV').checked;
+    const hasHP      = document.getElementById('hasHeatPump').checked;
+
+    const annual     = monthly * 12;
+    const bedKey     = Math.min(parseInt(bedrooms), 5);
+    const ukAvg      = avgBills[propType][bedKey] * (0.85 + occupants * 0.05);
+
+    // --- Savings calculations ---
+
+    // 1. Switching supplier (5–15% depending on current tariff)
+    const switchSaving = annual * 0.10;
+
+    // 2. Smart meter
+    const smartSaving = smartMeter === 'no' ? annual * 0.07 : 0;
+
+    // 3. Insulation
+    let insulationSaving = 0;
+    const epcMultiplier = { A:0, B:0.02, C:0.05, D:0.10, E:0.18, F:0.25, G:0.32 };
+    const epcBase = annual * epcMultiplier[epc];
+    if (!hasLoft)    insulationSaving += epcBase * 0.35;
+    if (!hasCavity)  insulationSaving += epcBase * 0.40;
+    if (!hasDG)      insulationSaving += epcBase * 0.15;
+    if (!hasBoiler && heating === 'gas') insulationSaving += annual * 0.08;
+
+    // 4. Behaviour (turning down thermostat, LED, standby)
+    const behaviourSaving = annual * 0.06;
+
+    // 5. Solar (if not already installed)
+    const solarAnnualGen = propType === 'flat' ? 0 : (bedKey <= 2 ? 2200 : bedKey === 3 ? 3000 : 3800); // kWh/yr
+    const electricityRate = 0.245; // p/kWh approx 2026
+    const solarSelfUse = solarAnnualGen * 0.5 * electricityRate;
+    const solarExport  = solarAnnualGen * 0.5 * 0.15;
+    const solarAnnualSaving = solar === 'no' ? solarSelfUse + solarExport : 0;
+    const solarCost = bedKey <= 2 ? 5500 : bedKey === 3 ? 7000 : 8500;
+    const solarROI = solarAnnualSaving > 0 ? Math.round(solarCost / solarAnnualSaving) : 0;
+
+    const totalSaving = switchSaving + smartSaving + insulationSaving + behaviourSaving + solarAnnualSaving;
+    const optimised = Math.max(annual - totalSaving, annual * 0.3);
+
+    // vs average
+    const vsDiff = annual - ukAvg;
+    const vsStr = vsDiff > 50 ? fmt(vsDiff) + ' above average' : vsDiff < -50 ? fmt(Math.abs(vsDiff)) + ' below average' : 'Around average';
+    const vsClass = vsDiff > 50 ? 'red' : vsDiff < -50 ? 'green' : 'amber';
+
+    // --- Populate hero ---
+    document.getElementById('totalSaving').textContent = fmt(totalSaving) + '/yr';
+    document.getElementById('currentAnnual').textContent = fmt(annual);
+    document.getElementById('optimisedAnnual').textContent = fmt(optimised);
+    document.getElementById('vsAverage').textContent = vsStr;
+
+    // --- Saving cards ---
+    const cards = [];
+    cards.push({ icon:'⚡', title:'Switch supplier', amount: fmt(switchSaving), desc:'Switching to a better tariff is the fastest saving. Takes around 20 minutes online.', effort:'effort-easy', effortLabel:'Easy — 20 mins' });
+    if (smartSaving > 0) cards.push({ icon:'📱', title:'Get a smart meter', amount: fmt(smartSaving), desc:'Free from your supplier. Typical households reduce usage 7% through greater awareness.', effort:'effort-easy', effortLabel:'Easy — free' });
+    if (insulationSaving > 50) cards.push({ icon:'🏠', title:'Insulation upgrades', amount: fmt(insulationSaving), desc: !hasLoft && !hasCavity ? 'Loft + cavity wall insulation would significantly cut heat loss.' : 'Some insulation upgrades could improve your EPC and lower heating bills.', effort:'effort-medium', effortLabel:'Medium effort' });
+    cards.push({ icon:'🌡️', title:'Usage changes', amount: fmt(behaviourSaving), desc:'Turn down thermostat 1°C, switch to LED bulbs, turn off standby. Zero cost.', effort:'effort-easy', effortLabel:'Easy — free' });
+    if (solarAnnualSaving > 200) cards.push({ icon:'☀️', title:'Solar panels', amount: fmt(solarAnnualSaving), desc:'Estimated saving including Smart Export Guarantee. ROI period: ~' + solarROI + ' years.', effort:'effort-invest', effortLabel:'Investment required' });
+
+    const cardContainer = document.getElementById('savingCards');
+    cardContainer.innerHTML = cards.map(c => `
+      <div class="saving-card">
+        <div class="sc-header"><div class="sc-icon">${c.icon}</div><div class="sc-title">${c.title}</div></div>
+        <div class="sc-amount">${c.amount}<span style="font-size:0.85rem;font-weight:400;color:#6b7280">/yr</span></div>
+        <div class="sc-desc">${c.desc}</div>
+        <span class="sc-effort ${c.effort}">${c.effortLabel}</span>
+      </div>`).join('');
+
+    // --- Usage breakdown ---
+    const profile = usageProfiles[heating];
+    const usageHtml = profile.map(u => `
+      <div class="usage-bar-row">
+        <div class="usage-label">${u.label}</div>
+        <div class="usage-track"><div class="usage-fill" style="width:${u.pct}%;background:${u.color}">${u.pct}%</div></div>
+        <div class="usage-val">${fmt(annual * u.pct / 100)}</div>
+      </div>`).join('');
+    document.getElementById('usageBreakdown').innerHTML = usageHtml;
+
+    // --- Full breakdown ---
+    document.getElementById('bd-monthly').textContent   = fmt(monthly) + '/month';
+    document.getElementById('bd-annual').textContent    = fmt(annual) + '/year';
+    document.getElementById('bd-avg').textContent       = fmt(ukAvg) + '/year';
+    document.getElementById('bd-vs').textContent        = vsStr;
+    document.getElementById('bd-vs').className          = 'val ' + vsClass;
+    document.getElementById('bd-switch').textContent    = fmt(switchSaving) + '/year';
+    document.getElementById('bd-smart').textContent     = smartSaving > 0 ? fmt(smartSaving) + '/year' : 'Already have smart meter';
+    document.getElementById('bd-insulation').textContent= insulationSaving > 0 ? fmt(insulationSaving) + '/year' : 'Well insulated — minimal gain';
+    document.getElementById('bd-behaviour').textContent = fmt(behaviourSaving) + '/year';
+    document.getElementById('bd-solar').textContent     = solar === 'yes' ? 'Already installed' : solarAnnualSaving > 0 ? fmt(solarAnnualSaving) + '/year' : propType === 'flat' ? 'Not suitable for flats' : 'Low potential';
+    document.getElementById('bd-solarroi').textContent  = solar === 'yes' ? 'N/A' : solarROI > 0 ? solarROI + ' years (then profit for 15+ years)' : 'N/A';
+
+    // --- Show/hide solar and insulation CTAs ---
+    document.getElementById('solarCta').style.display = (solar === 'no' && solarAnnualSaving > 200) ? 'block' : 'none';
+    document.getElementById('insulationCta').style.display = ((!hasLoft || !hasCavity) && insulationSaving > 100) ? 'block' : 'none';
+
+    document.getElementById('results').classList.add('show');
+  }
+
+  function calculateAndScroll() {
+    calculate();
+    const results = document.getElementById('results');
+    if (results.classList.contains('show')) {
+      results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput').value;
+    if (!email || !email.includes('@')) { document.getElementById('emailInput').style.borderColor = '#ef4444'; return; }
+    document.getElementById('emailInput').style.borderColor = '#d1d5db';
+    document.querySelector('.email-form').style.display = 'none';
+    document.getElementById('emailSuccess').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
