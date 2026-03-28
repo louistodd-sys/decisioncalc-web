@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISA vs SIPP Calculator UK 2026 | DecisionCalc</title>
+  <meta name="description" content="Free UK ISA vs SIPP calculator. Find out whether a Stocks & Shares ISA or SIPP is better for your retirement. Includes tax relief calculations and projected pot sizes.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; }
+    a { color: #0F6E56; }
+
+    /* Nav */
+    nav { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
+    .nav-brand { font-weight: 700; font-size: 1.1rem; color: #1a1a1a; text-decoration: none; }
+    .nav-tag { font-size: 0.75rem; background: #f0fdf4; color: #0F6E56; padding: 2px 10px; border-radius: 20px; border: 1px solid #bbf7d0; }
+
+    /* Layout */
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+    .breadcrumb { font-size: 0.8rem; color: #6b7280; margin-bottom: 20px; }
+    .breadcrumb a { color: #6b7280; text-decoration: none; }
+    .breadcrumb a:hover { color: #0F6E56; }
+
+    /* Header */
+    .page-header { margin-bottom: 32px; }
+    .page-header h1 { font-size: 1.9rem; font-weight: 700; color: #111; margin-bottom: 8px; }
+    .page-header p { color: #4b5563; font-size: 1rem; max-width: 600px; }
+
+    /* Card */
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 28px; margin-bottom: 20px; }
+    .card-title { font-size: 1rem; font-weight: 600; color: #111; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    .card-title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: #0F6E56; border-radius: 2px; }
+
+    /* Form */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.875rem; font-weight: 500; color: #374151; }
+    .form-group .hint { font-size: 0.75rem; color: #9ca3af; }
+    .input-wrap { position: relative; }
+    .input-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: #6b7280; pointer-events: none; }
+    .input-suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: #9ca3af; pointer-events: none; }
+    input[type="number"], input[type="range"], select {
+      width: 100%; padding: 10px 12px 10px 28px; border: 1px solid #d1d5db; border-radius: 8px;
+      font-size: 0.95rem; color: #111; background: #fff; outline: none; transition: border-color .15s;
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    input[type="number"]:focus { border-color: #0F6E56; box-shadow: 0 0 0 3px rgba(15,110,86,.1); }
+    .no-prefix { padding-left: 12px; }
+    input[type="range"] { padding: 0; height: 6px; -webkit-appearance: none; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #0F6E56; border-radius: 50%; cursor: pointer; }
+    .range-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .range-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: #9ca3af; }
+    .range-val { font-size: 0.875rem; font-weight: 600; color: #0F6E56; text-align: right; }
+
+    /* Button */
+    .btn { width: 100%; padding: 14px; background: #0F6E56; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 24px; transition: background .15s; }
+    .btn:hover { background: #0a5a46; }
+
+    /* Results */
+    .results { display: none; }
+    .results.show { display: block; }
+    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media (max-width: 600px) { .results-grid { grid-template-columns: 1fr; } }
+
+    .result-box { border-radius: 10px; padding: 20px; text-align: center; }
+    .result-box.isa { background: #eff6ff; border: 1.5px solid #bfdbfe; }
+    .result-box.sipp { background: #f0fdf4; border: 1.5px solid #bbf7d0; }
+    .result-box .label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+    .result-box.isa .label { color: #1d4ed8; }
+    .result-box.sipp .label { color: #0F6E56; }
+    .result-box .amount { font-size: 2rem; font-weight: 700; margin-bottom: 4px; }
+    .result-box.isa .amount { color: #1e40af; }
+    .result-box.sipp .amount { color: #0a5a46; }
+    .result-box .sub { font-size: 0.78rem; color: #6b7280; }
+
+    .winner-banner { border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    .winner-banner.sipp-wins { background: #f0fdf4; border: 1.5px solid #0F6E56; }
+    .winner-banner.isa-wins { background: #eff6ff; border: 1.5px solid #1d4ed8; }
+    .winner-icon { font-size: 1.5rem; }
+    .winner-text strong { font-size: 0.95rem; display: block; margin-bottom: 2px; }
+    .winner-text span { font-size: 0.82rem; color: #4b5563; }
+
+    .breakdown { margin-top: 4px; }
+    .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 0.875rem; }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-row .key { color: #4b5563; }
+    .breakdown-row .val { font-weight: 600; color: #111; }
+    .breakdown-row .val.green { color: #0F6E56; }
+    .breakdown-row .val.blue { color: #1d4ed8; }
+
+    /* CTA */
+    .cta-box { background: #fff; border: 1.5px solid #0F6E56; border-radius: 12px; padding: 24px; margin-top: 24px; }
+    .cta-box h3 { font-size: 1.05rem; font-weight: 600; color: #111; margin-bottom: 6px; }
+    .cta-box p { font-size: 0.875rem; color: #4b5563; margin-bottom: 16px; }
+    .cta-links { display: flex; flex-direction: column; gap: 10px; }
+    .cta-link { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: opacity .15s; }
+    .cta-link:hover { opacity: 0.88; }
+    .cta-link.primary { background: #0F6E56; color: #fff; }
+    .cta-link.secondary { background: #f8f9fa; color: #1a1a1a; border: 1px solid #e5e7eb; }
+    .cta-link .arrow { font-size: 1rem; }
+    .cta-disclaimer { font-size: 0.72rem; color: #9ca3af; margin-top: 12px; line-height: 1.5; }
+
+    /* Email capture */
+    .email-box { background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-top: 16px; }
+    .email-box h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
+    .email-box p { font-size: 0.8rem; color: #6b7280; margin-bottom: 12px; }
+    .email-form { display: flex; gap: 8px; }
+    @media (max-width: 500px) { .email-form { flex-direction: column; } }
+    .email-input { flex: 1; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.875rem; outline: none; }
+    .email-input:focus { border-color: #0F6E56; }
+    .email-btn { padding: 10px 18px; background: #0F6E56; color: #fff; border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .email-success { font-size: 0.875rem; color: #0F6E56; font-weight: 500; display: none; padding: 10px 0; }
+
+    /* Risk warning */
+    .risk-warning { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 14px 16px; margin-top: 20px; font-size: 0.75rem; color: #78350f; line-height: 1.6; }
+    .risk-warning strong { display: block; margin-bottom: 4px; }
+
+    /* SEO content */
+    .seo-content { margin-top: 40px; padding-top: 32px; border-top: 1px solid #e5e7eb; }
+    .seo-content h2 { font-size: 1.3rem; font-weight: 700; color: #111; margin-bottom: 12px; }
+    .seo-content h3 { font-size: 1rem; font-weight: 600; color: #111; margin: 20px 0 8px; }
+    .seo-content p { font-size: 0.9rem; color: #4b5563; margin-bottom: 12px; line-height: 1.7; }
+    .seo-content ul { padding-left: 20px; margin-bottom: 12px; }
+    .seo-content li { font-size: 0.9rem; color: #4b5563; margin-bottom: 6px; line-height: 1.6; }
+
+    /* Other tools */
+    .other-tools { margin-top: 40px; }
+    .other-tools h3 { font-size: 1rem; font-weight: 600; margin-bottom: 14px; }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+    .tool-link { display: block; padding: 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; text-decoration: none; color: #111; font-size: 0.875rem; font-weight: 500; transition: border-color .15s; }
+    .tool-link:hover { border-color: #0F6E56; color: #0F6E56; }
+    .tool-link .tool-icon { font-size: 1.2rem; margin-bottom: 6px; display: block; }
+
+    footer { background: #fff; border-top: 1px solid #e5e7eb; padding: 24px; text-align: center; font-size: 0.78rem; color: #9ca3af; margin-top: 40px; }
+    footer a { color: #9ca3af; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">DecisionCalc</a>
+  <span class="nav-tag">Free UK Tools</span>
+</nav>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="/">Home</a> › ISA vs SIPP Calculator
+  </div>
+
+  <div class="page-header">
+    <h1>ISA vs SIPP Calculator UK 2026</h1>
+    <p>Find out whether a Stocks & Shares ISA or SIPP pension is better for your money — including tax relief, annual allowances, and projected retirement pot.</p>
+  </div>
+
+  <!-- Calculator card -->
+  <div class="card">
+    <div class="card-title">Your Details</div>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="age">Your current age</label>
+        <div class="range-wrap">
+          <div class="range-val" id="ageVal">32</div>
+          <input type="range" id="age" min="18" max="65" value="32" oninput="document.getElementById('ageVal').textContent=this.value;calculate()">
+          <div class="range-labels"><span>18</span><span>65</span></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="retireAge">Target retirement age</label>
+        <div class="range-wrap">
+          <div class="range-val" id="retireVal">67</div>
+          <input type="range" id="retireAge" min="55" max="80" value="67" oninput="document.getElementById('retireVal').textContent=this.value;calculate()">
+          <div class="range-labels"><span>55</span><span>80</span></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="salary">Annual salary (gross)</label>
+        <div class="hint">Used to calculate your income tax band</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="salary" value="42000" min="0" max="500000" oninput="calculate()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="monthly">Monthly contribution</label>
+        <div class="hint">Amount you want to invest each month</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="monthly" value="400" min="0" max="10000" oninput="calculate()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="growth">Expected annual growth rate</label>
+        <div class="range-wrap">
+          <div class="range-val" id="growthVal">6%</div>
+          <input type="range" id="growth" min="2" max="12" value="6" oninput="document.getElementById('growthVal').textContent=this.value+'%';calculate()">
+          <div class="range-labels"><span>2% (cautious)</span><span>12% (aggressive)</span></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="existing">Existing pension / ISA pot</label>
+        <div class="hint">Enter 0 if starting fresh</div>
+        <div class="input-wrap">
+          <span class="input-prefix">£</span>
+          <input type="number" id="existing" value="0" min="0" oninput="calculate()">
+        </div>
+      </div>
+
+    </div>
+    <button class="btn" onclick="calculate()">Calculate my options →</button>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+
+    <div class="winner-banner" id="winnerBanner">
+      <div class="winner-icon" id="winnerIcon">🏆</div>
+      <div class="winner-text">
+        <strong id="winnerTitle"></strong>
+        <span id="winnerSub"></span>
+      </div>
+    </div>
+
+    <div class="results-grid">
+      <div class="result-box isa">
+        <div class="label">Stocks & Shares ISA</div>
+        <div class="amount" id="isaPot">—</div>
+        <div class="sub">Projected pot at retirement</div>
+      </div>
+      <div class="result-box sipp">
+        <div class="label">SIPP Pension</div>
+        <div class="amount" id="sippPot">—</div>
+        <div class="sub">Projected pot at retirement</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Full Breakdown</div>
+      <div class="breakdown">
+        <div class="breakdown-row">
+          <span class="key">Years to retirement</span>
+          <span class="val" id="years">—</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="key">Your income tax band</span>
+          <span class="val" id="taxBand">—</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="key">Monthly contribution</span>
+          <span class="val" id="monthlyDisp">—</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="key">SIPP: tax relief added per month</span>
+          <span class="val green" id="taxRelief">—</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="key">SIPP: effective monthly contribution</span>
+          <span class="val green" id="sippEffective">—</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="key">ISA: monthly contribution</span>
+          <span class="val blue" id="isaEffective">—</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="key">ISA: withdrawals are 100% tax-free</span>
+          <span class="val blue">✓ Always</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="key">SIPP: 25% lump sum tax-free at 57+</span>
+          <span class="val green">✓ From age 57</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="key">Total you put in over this period</span>
+          <span class="val" id="totalContrib">—</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="key">Investment growth</span>
+          <span class="val green" id="totalGrowth">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h3>Ready to open your account?</h3>
+      <p>Compare the UK's top-rated investment platforms and open an ISA or SIPP in minutes. FCA-regulated and trusted by millions of UK investors.</p>
+      <div class="cta-links">
+        <a class="cta-link primary" href="https://www.hl.co.uk/investment-services/stocks-shares-isa" target="_blank" rel="noopener sponsored" id="hlLink">
+          <span>Open an ISA or SIPP with Hargreaves Lansdown</span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="cta-link secondary" href="https://www.vanguardinvestor.co.uk/what-we-offer/stocks-shares-isa" target="_blank" rel="noopener sponsored">
+          <span>Explore low-cost investing with Vanguard</span>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+      <div class="cta-disclaimer">
+        ⚠️ Capital at risk. The value of investments can go down as well as up. This calculator is for educational purposes only and does not constitute financial advice. Past performance is not a guide to future returns. This site contains affiliate links — we may earn a commission at no extra cost to you.
+      </div>
+    </div>
+
+    <!-- Email capture -->
+    <div class="email-box">
+      <h4>📊 Save your results</h4>
+      <p>Get a free ISA vs SIPP comparison guide emailed to you — including which account to open first based on your tax band.</p>
+      <div class="email-form">
+        <input type="email" class="email-input" id="emailInput" placeholder="your@email.com">
+        <button class="email-btn" onclick="submitEmail()">Send me the guide</button>
+      </div>
+      <div class="email-success" id="emailSuccess">✓ Guide on its way — check your inbox!</div>
+    </div>
+
+    <div class="risk-warning">
+      <strong>Risk warning</strong>
+      Investing involves risk. You may get back less than you invest. This calculator provides estimates based on the inputs you provide and assumes a constant rate of return, which is not guaranteed. Tax treatment depends on your individual circumstances and may change. The annual ISA allowance is £20,000 and SIPP annual allowance is £60,000 (or 100% of earnings, whichever is lower) for the 2025/26 tax year. Always seek independent financial advice before making investment decisions.
+    </div>
+
+  </div>
+
+  <!-- SEO content -->
+  <div class="seo-content">
+    <h2>ISA vs SIPP: Which is better for UK investors in 2026?</h2>
+    <p>The decision between an Individual Savings Account (ISA) and a Self-Invested Personal Pension (SIPP) is one of the most important financial choices UK adults face. Both offer tax advantages, but they work in very different ways — and the right answer depends on your age, income, and when you need the money.</p>
+
+    <h3>How does a Stocks & Shares ISA work?</h3>
+    <p>A Stocks & Shares ISA lets you invest up to £20,000 per year in stocks, funds, bonds and other assets completely free of UK income tax and capital gains tax. Crucially, you can withdraw your money at any time without penalty or tax. This flexibility makes ISAs ideal for medium-term goals as well as retirement savings.</p>
+
+    <h3>How does a SIPP work?</h3>
+    <p>A SIPP is a type of personal pension that gives you control over how your money is invested. The key advantage is tax relief — for every £80 you contribute, the government adds £20 (basic rate taxpayers), making it effectively £100 invested. Higher rate taxpayers can claim an additional 20% through their tax return, making SIPPs extremely powerful for higher earners. The trade-off is that you can't access the money until age 57 (rising to 58 in 2028).</p>
+
+    <h3>ISA vs SIPP: key differences</h3>
+    <ul>
+      <li><strong>Tax relief:</strong> SIPPs get upfront tax relief; ISAs do not</li>
+      <li><strong>Access:</strong> ISA money is available anytime; SIPP money is locked until 57+</li>
+      <li><strong>Withdrawals:</strong> ISA withdrawals are fully tax-free; SIPP withdrawals are partially taxable (except the 25% tax-free lump sum)</li>
+      <li><strong>Annual limits:</strong> ISA: £20,000/year; SIPP: up to £60,000/year</li>
+      <li><strong>Inheritance:</strong> SIPPs are generally outside your estate for inheritance tax purposes; ISAs are not</li>
+    </ul>
+
+    <h3>When is a SIPP better than an ISA?</h3>
+    <p>SIPPs are typically better for higher rate (40%) and additional rate (45%) taxpayers, people who won't need the money before age 57, those who want to reduce their inheritance tax liability, and anyone who wants to maximise their retirement pot through tax-efficient compounding over decades.</p>
+
+    <h3>When is an ISA better than a SIPP?</h3>
+    <p>ISAs are typically better for basic rate (20%) taxpayers who don't receive much additional benefit from tax relief, people who may need access to their funds before retirement, those who prefer simplicity and flexibility, and younger investors who want the option to use the money for a house purchase or other goals.</p>
+  </div>
+
+  <!-- Other tools -->
+  <div class="other-tools">
+    <h3>Other free DecisionCalc tools</h3>
+    <div class="tools-grid">
+      <a class="tool-link" href="/mortgage-overpayment-calculator.html">
+        <span class="tool-icon">🏠</span>
+        Mortgage Overpayment Calculator
+      </a>
+      <a class="tool-link" href="/car-repair-vs-replace.html">
+        <span class="tool-icon">🚗</span>
+        Car Repair vs Replace Calculator
+      </a>
+      <a class="tool-link" href="/energy-bill-optimiser.html">
+        <span class="tool-icon">⚡</span>
+        Energy Bill Optimiser
+      </a>
+      <a class="tool-link" href="/trading-journal.html">
+        <span class="tool-icon">📊</span>
+        Free Trading Journal
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 DecisionCalc · <a href="/">Home</a> · Free UK financial calculators · Not financial advice · <a href="mailto:hello@decisioncalc.co.uk">hello@decisioncalc.co.uk</a></p>
+  <p style="margin-top:6px">This site contains affiliate links. We may earn a commission when you click links to our partners at no extra cost to you.</p>
+</footer>
+
+<script>
+  function fmt(n) {
+    return '£' + Math.round(n).toLocaleString('en-GB');
+  }
+
+  function getTaxRate(salary) {
+    if (salary <= 12570) return { rate: 0, label: 'Personal allowance (0%)' };
+    if (salary <= 50270) return { rate: 0.20, label: 'Basic rate (20%)' };
+    if (salary <= 125140) return { rate: 0.40, label: 'Higher rate (40%)' };
+    return { rate: 0.45, label: 'Additional rate (45%)' };
+  }
+
+  function futureValue(monthly, years, annualRate, existing) {
+    const r = annualRate / 12;
+    const n = years * 12;
+    if (r === 0) return existing + monthly * n;
+    const fvExisting = existing * Math.pow(1 + r, n);
+    const fvContribs = monthly * (Math.pow(1 + r, n) - 1) / r;
+    return fvExisting + fvContribs;
+  }
+
+  function calculate() {
+    const age = parseInt(document.getElementById('age').value);
+    const retireAge = parseInt(document.getElementById('retireAge').value);
+    const salary = parseFloat(document.getElementById('salary').value) || 0;
+    const monthly = parseFloat(document.getElementById('monthly').value) || 0;
+    const growth = parseFloat(document.getElementById('growth').value) / 100;
+    const existing = parseFloat(document.getElementById('existing').value) || 0;
+
+    const years = Math.max(retireAge - age, 1);
+    const tax = getTaxRate(salary);
+
+    // ISA: contribute monthly, grows tax-free
+    const isaMonthly = monthly;
+    const isaPotRaw = futureValue(isaMonthly, years, growth, existing);
+
+    // SIPP: government adds tax relief on top
+    const taxRelief = monthly * (tax.rate / (1 - tax.rate));
+    const sippMonthly = monthly + taxRelief;
+    const sippPotRaw = futureValue(sippMonthly, years, growth, existing);
+
+    // Total contributions
+    const totalContrib = monthly * years * 12 + existing;
+    const totalGrowthIsa = isaPotRaw - totalContrib;
+
+    // Show results
+    document.getElementById('isaPot').textContent = fmt(isaPotRaw);
+    document.getElementById('sippPot').textContent = fmt(sippPotRaw);
+    document.getElementById('years').textContent = years + ' years';
+    document.getElementById('taxBand').textContent = tax.label;
+    document.getElementById('monthlyDisp').textContent = fmt(monthly) + '/month';
+    document.getElementById('taxRelief').textContent = '+' + fmt(taxRelief) + '/month';
+    document.getElementById('sippEffective').textContent = fmt(sippMonthly) + '/month';
+    document.getElementById('isaEffective').textContent = fmt(isaMonthly) + '/month';
+    document.getElementById('totalContrib').textContent = fmt(totalContrib);
+    document.getElementById('totalGrowth').textContent = '+' + fmt(Math.max(isaPotRaw - totalContrib, 0));
+
+    // Winner banner
+    const banner = document.getElementById('winnerBanner');
+    const winnerTitle = document.getElementById('winnerTitle');
+    const winnerSub = document.getElementById('winnerSub');
+    const winnerIcon = document.getElementById('winnerIcon');
+    const diff = Math.abs(sippPotRaw - isaPotRaw);
+
+    if (sippPotRaw > isaPotRaw) {
+      banner.className = 'winner-banner sipp-wins';
+      winnerIcon.textContent = '🏆';
+      winnerTitle.textContent = 'SIPP wins for your situation';
+      winnerSub.textContent = 'Tax relief means your SIPP could grow ' + fmt(diff) + ' more than an ISA by retirement. But remember you can\'t access it until age 57.';
+    } else {
+      banner.className = 'winner-banner isa-wins';
+      winnerIcon.textContent = '🏆';
+      winnerTitle.textContent = 'ISA is competitive for your situation';
+      winnerSub.textContent = 'At your tax band, the flexibility of an ISA outweighs the SIPP\'s tax relief advantage. You can access your money at any time.';
+    }
+
+    document.getElementById('results').classList.add('show');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function submitEmail() {
+    const email = document.getElementById('emailInput').value;
+    if (!email || !email.includes('@')) {
+      document.getElementById('emailInput').style.borderColor = '#ef4444';
+      return;
+    }
+    document.getElementById('emailInput').style.borderColor = '#d1d5db';
+    // In production, POST to your Supabase email capture endpoint
+    document.querySelector('.email-form').style.display = 'none';
+    document.getElementById('emailSuccess').style.display = 'block';
+  }
+
+  // Calculate on load with defaults
+  calculate();
+</script>
+
+</body>
+</html>
