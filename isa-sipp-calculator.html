@@ -3,35 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ISA vs SIPP Calculator UK 2026 | DecisionCalc</title>
-  <meta name="description" content="Free UK ISA vs SIPP calculator. Find out whether a Stocks & Shares ISA or SIPP is better for your retirement. Includes tax relief calculations and projected pot sizes.">
+  <title>Mortgage Overpayment Calculator UK 2026 | DecisionCalc</title>
+  <meta name="description" content="Free UK mortgage overpayment calculator. See exactly how much interest you save and how many years you cut from your mortgage by overpaying each month.">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #1a1a1a; line-height: 1.6; }
     a { color: #0F6E56; }
-
-    /* Nav */
     nav { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 14px 24px; display: flex; align-items: center; gap: 12px; }
     .nav-brand { font-weight: 700; font-size: 1.1rem; color: #1a1a1a; text-decoration: none; }
     .nav-tag { font-size: 0.75rem; background: #f0fdf4; color: #0F6E56; padding: 2px 10px; border-radius: 20px; border: 1px solid #bbf7d0; }
-
-    /* Layout */
     .container { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
     .breadcrumb { font-size: 0.8rem; color: #6b7280; margin-bottom: 20px; }
     .breadcrumb a { color: #6b7280; text-decoration: none; }
     .breadcrumb a:hover { color: #0F6E56; }
-
-    /* Header */
     .page-header { margin-bottom: 32px; }
     .page-header h1 { font-size: 1.9rem; font-weight: 700; color: #111; margin-bottom: 8px; }
-    .page-header p { color: #4b5563; font-size: 1rem; max-width: 600px; }
-
-    /* Card */
+    .page-header p { color: #4b5563; font-size: 1rem; max-width: 620px; }
     .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 28px; margin-bottom: 20px; }
     .card-title { font-size: 1rem; font-weight: 600; color: #111; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
     .card-title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: #0F6E56; border-radius: 2px; }
-
-    /* Form */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -40,57 +30,60 @@
     .input-wrap { position: relative; }
     .input-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.9rem; color: #6b7280; pointer-events: none; }
     .input-suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 0.75rem; color: #9ca3af; pointer-events: none; }
-    input[type="number"], input[type="range"], select {
-      width: 100%; padding: 10px 12px 10px 28px; border: 1px solid #d1d5db; border-radius: 8px;
-      font-size: 0.95rem; color: #111; background: #fff; outline: none; transition: border-color .15s;
-      -moz-appearance: textfield;
-    }
+    input[type="number"] { width: 100%; padding: 10px 40px 10px 28px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.95rem; color: #111; background: #fff; outline: none; transition: border-color .15s; -moz-appearance: textfield; }
     input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
     input[type="number"]:focus { border-color: #0F6E56; box-shadow: 0 0 0 3px rgba(15,110,86,.1); }
-    .no-prefix { padding-left: 12px; }
-    input[type="range"] { padding: 0; height: 6px; -webkit-appearance: none; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer; }
-    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #0F6E56; border-radius: 50%; cursor: pointer; }
+    .no-prefix { padding-left: 12px !important; }
     .range-wrap { display: flex; flex-direction: column; gap: 6px; }
-    .range-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: #9ca3af; }
     .range-val { font-size: 0.875rem; font-weight: 600; color: #0F6E56; text-align: right; }
-
-    /* Button */
+    .range-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: #9ca3af; }
+    input[type="range"] { width: 100%; padding: 0; height: 6px; -webkit-appearance: none; background: #e5e7eb; border: none; border-radius: 4px; cursor: pointer; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #0F6E56; border-radius: 50%; cursor: pointer; }
     .btn { width: 100%; padding: 14px; background: #0F6E56; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 24px; transition: background .15s; }
     .btn:hover { background: #0a5a46; }
 
-    /* Results */
+    /* Big savings display */
+    .savings-hero { background: linear-gradient(135deg, #0F6E56 0%, #0a5a46 100%); border-radius: 14px; padding: 32px; text-align: center; color: #fff; margin-bottom: 20px; }
+    .savings-hero .eyebrow { font-size: 0.8rem; text-transform: uppercase; letter-spacing: .08em; opacity: .8; margin-bottom: 8px; }
+    .savings-hero .big-number { font-size: 3.2rem; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+    .savings-hero .sub { font-size: 1rem; opacity: .85; }
+    .savings-hero .divider { border: none; border-top: 1px solid rgba(255,255,255,.2); margin: 20px 0; }
+    .savings-hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .savings-stat .stat-label { font-size: 0.75rem; opacity: .75; margin-bottom: 4px; }
+    .savings-stat .stat-val { font-size: 1.5rem; font-weight: 700; }
+
     .results { display: none; }
     .results.show { display: block; }
-    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-    @media (max-width: 600px) { .results-grid { grid-template-columns: 1fr; } }
 
-    .result-box { border-radius: 10px; padding: 20px; text-align: center; }
-    .result-box.isa { background: #eff6ff; border: 1.5px solid #bfdbfe; }
-    .result-box.sipp { background: #f0fdf4; border: 1.5px solid #bbf7d0; }
-    .result-box .label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-    .result-box.isa .label { color: #1d4ed8; }
-    .result-box.sipp .label { color: #0F6E56; }
-    .result-box .amount { font-size: 2rem; font-weight: 700; margin-bottom: 4px; }
-    .result-box.isa .amount { color: #1e40af; }
-    .result-box.sipp .amount { color: #0a5a46; }
-    .result-box .sub { font-size: 0.78rem; color: #6b7280; }
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    @media (max-width: 560px) { .comparison-grid { grid-template-columns: 1fr; } .savings-hero-grid { grid-template-columns: 1fr; } }
+    .comp-box { border-radius: 10px; padding: 18px; }
+    .comp-box.original { background: #fef2f2; border: 1.5px solid #fecaca; }
+    .comp-box.overpay { background: #f0fdf4; border: 1.5px solid #bbf7d0; }
+    .comp-box .label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+    .comp-box.original .label { color: #dc2626; }
+    .comp-box.overpay .label { color: #0F6E56; }
+    .comp-box .row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
+    .comp-box .row .k { color: #6b7280; }
+    .comp-box .row .v { font-weight: 600; color: #111; }
+    .comp-box .row .v.good { color: #0F6E56; }
 
-    .winner-banner { border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-    .winner-banner.sipp-wins { background: #f0fdf4; border: 1.5px solid #0F6E56; }
-    .winner-banner.isa-wins { background: #eff6ff; border: 1.5px solid #1d4ed8; }
-    .winner-icon { font-size: 1.5rem; }
-    .winner-text strong { font-size: 0.95rem; display: block; margin-bottom: 2px; }
-    .winner-text span { font-size: 0.82rem; color: #4b5563; }
-
-    .breakdown { margin-top: 4px; }
     .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f3f4f6; font-size: 0.875rem; }
     .breakdown-row:last-child { border-bottom: none; }
     .breakdown-row .key { color: #4b5563; }
     .breakdown-row .val { font-weight: 600; color: #111; }
     .breakdown-row .val.green { color: #0F6E56; }
-    .breakdown-row .val.blue { color: #1d4ed8; }
+    .breakdown-row .val.red { color: #dc2626; }
 
-    /* CTA */
+    /* Timeline bar */
+    .timeline-section { margin-bottom: 6px; }
+    .timeline-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: #6b7280; margin-bottom: 6px; }
+    .timeline-track { height: 28px; background: #f3f4f6; border-radius: 6px; overflow: hidden; position: relative; }
+    .timeline-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 10px; font-size: 0.78rem; font-weight: 600; color: #fff; transition: width .6s ease; }
+    .timeline-fill.original-bar { background: #f87171; }
+    .timeline-fill.overpay-bar { background: #0F6E56; }
+    .timeline-gap { font-size: 0.8rem; color: #0F6E56; font-weight: 600; text-align: right; margin-top: 4px; }
+
     .cta-box { background: #fff; border: 1.5px solid #0F6E56; border-radius: 12px; padding: 24px; margin-top: 24px; }
     .cta-box h3 { font-size: 1.05rem; font-weight: 600; color: #111; margin-bottom: 6px; }
     .cta-box p { font-size: 0.875rem; color: #4b5563; margin-bottom: 16px; }
@@ -102,7 +95,6 @@
     .cta-link .arrow { font-size: 1rem; }
     .cta-disclaimer { font-size: 0.72rem; color: #9ca3af; margin-top: 12px; line-height: 1.5; }
 
-    /* Email capture */
     .email-box { background: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px; margin-top: 16px; }
     .email-box h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
     .email-box p { font-size: 0.8rem; color: #6b7280; margin-bottom: 12px; }
@@ -113,11 +105,9 @@
     .email-btn { padding: 10px 18px; background: #0F6E56; color: #fff; border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
     .email-success { font-size: 0.875rem; color: #0F6E56; font-weight: 500; display: none; padding: 10px 0; }
 
-    /* Risk warning */
     .risk-warning { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 14px 16px; margin-top: 20px; font-size: 0.75rem; color: #78350f; line-height: 1.6; }
     .risk-warning strong { display: block; margin-bottom: 4px; }
 
-    /* SEO content */
     .seo-content { margin-top: 40px; padding-top: 32px; border-top: 1px solid #e5e7eb; }
     .seo-content h2 { font-size: 1.3rem; font-weight: 700; color: #111; margin-bottom: 12px; }
     .seo-content h3 { font-size: 1rem; font-weight: 600; color: #111; margin: 20px 0 8px; }
@@ -125,7 +115,6 @@
     .seo-content ul { padding-left: 20px; margin-bottom: 12px; }
     .seo-content li { font-size: 0.9rem; color: #4b5563; margin-bottom: 6px; line-height: 1.6; }
 
-    /* Other tools */
     .other-tools { margin-top: 40px; }
     .other-tools h3 { font-size: 1rem; font-weight: 600; margin-bottom: 14px; }
     .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
@@ -146,222 +135,194 @@
 
 <div class="container">
   <div class="breadcrumb">
-    <a href="/">Home</a> › ISA vs SIPP Calculator
+    <a href="/">Home</a> › Mortgage Overpayment Calculator
   </div>
 
   <div class="page-header">
-    <h1>ISA vs SIPP Calculator UK 2026</h1>
-    <p>Find out whether a Stocks & Shares ISA or SIPP pension is better for your money — including tax relief, annual allowances, and projected retirement pot.</p>
+    <h1>Mortgage Overpayment Calculator UK 2026</h1>
+    <p>See exactly how much interest you save and how many years you cut from your mortgage by overpaying. Enter your details below for an instant breakdown.</p>
   </div>
 
-  <!-- Calculator card -->
   <div class="card">
-    <div class="card-title">Your Details</div>
+    <div class="card-title">Your Mortgage Details</div>
     <div class="form-grid">
 
       <div class="form-group">
-        <label for="age">Your current age</label>
-        <div class="range-wrap">
-          <div class="range-val" id="ageVal">32</div>
-          <input type="range" id="age" min="18" max="65" value="32" oninput="document.getElementById('ageVal').textContent=this.value;calculate()">
-          <div class="range-labels"><span>18</span><span>65</span></div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="retireAge">Target retirement age</label>
-        <div class="range-wrap">
-          <div class="range-val" id="retireVal">67</div>
-          <input type="range" id="retireAge" min="55" max="80" value="67" oninput="document.getElementById('retireVal').textContent=this.value;calculate()">
-          <div class="range-labels"><span>55</span><span>80</span></div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="salary">Annual salary (gross)</label>
-        <div class="hint">Used to calculate your income tax band</div>
+        <label for="balance">Outstanding mortgage balance</label>
+        <div class="hint">How much you still owe</div>
         <div class="input-wrap">
           <span class="input-prefix">£</span>
-          <input type="number" id="salary" value="42000" min="0" max="500000" oninput="calculate()">
+          <input type="number" id="balance" value="220000" min="1000" max="5000000" oninput="calculate()">
         </div>
       </div>
 
       <div class="form-group">
-        <label for="monthly">Monthly contribution</label>
-        <div class="hint">Amount you want to invest each month</div>
-        <div class="input-wrap">
-          <span class="input-prefix">£</span>
-          <input type="number" id="monthly" value="400" min="0" max="10000" oninput="calculate()">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="growth">Expected annual growth rate</label>
+        <label for="rate">Interest rate</label>
+        <div class="hint">Your current mortgage rate</div>
         <div class="range-wrap">
-          <div class="range-val" id="growthVal">6%</div>
-          <input type="range" id="growth" min="2" max="12" value="6" oninput="document.getElementById('growthVal').textContent=this.value+'%';calculate()">
-          <div class="range-labels"><span>2% (cautious)</span><span>12% (aggressive)</span></div>
+          <div class="range-val" id="rateVal">4.5%</div>
+          <input type="range" id="rate" min="1" max="10" step="0.1" value="4.5" oninput="document.getElementById('rateVal').textContent=parseFloat(this.value).toFixed(1)+'%';calculate()">
+          <div class="range-labels"><span>1%</span><span>10%</span></div>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="existing">Existing pension / ISA pot</label>
-        <div class="hint">Enter 0 if starting fresh</div>
+        <label for="term">Remaining term</label>
+        <div class="hint">Years left on your mortgage</div>
+        <div class="range-wrap">
+          <div class="range-val" id="termVal">22 years</div>
+          <input type="range" id="term" min="1" max="40" value="22" oninput="document.getElementById('termVal').textContent=this.value+' years';calculate()">
+          <div class="range-labels"><span>1 yr</span><span>40 yrs</span></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="overpay">Monthly overpayment amount</label>
+        <div class="hint">Extra you want to pay each month</div>
         <div class="input-wrap">
           <span class="input-prefix">£</span>
-          <input type="number" id="existing" value="0" min="0" oninput="calculate()">
+          <input type="number" id="overpay" value="300" min="0" max="50000" oninput="calculate()">
         </div>
       </div>
 
     </div>
-    <button class="btn" onclick="calculate()">Calculate my options →</button>
+    <button class="btn" onclick="calculateAndScroll()">Calculate my savings →</button>
   </div>
 
   <!-- Results -->
   <div class="results" id="results">
 
-    <div class="winner-banner" id="winnerBanner">
-      <div class="winner-icon" id="winnerIcon">🏆</div>
-      <div class="winner-text">
-        <strong id="winnerTitle"></strong>
-        <span id="winnerSub"></span>
+    <!-- Big savings hero -->
+    <div class="savings-hero">
+      <div class="eyebrow">Total interest saved by overpaying</div>
+      <div class="big-number" id="interestSaved">—</div>
+      <div class="sub">You could pay off your mortgage <strong id="yearsSaved">—</strong> early</div>
+      <hr class="divider">
+      <div class="savings-hero-grid">
+        <div class="savings-stat">
+          <div class="stat-label">New payoff date</div>
+          <div class="stat-val" id="newPayoff">—</div>
+        </div>
+        <div class="savings-stat">
+          <div class="stat-label">Original payoff date</div>
+          <div class="stat-val" id="origPayoff">—</div>
+        </div>
       </div>
     </div>
 
-    <div class="results-grid">
-      <div class="result-box isa">
-        <div class="label">Stocks & Shares ISA</div>
-        <div class="amount" id="isaPot">—</div>
-        <div class="sub">Projected pot at retirement</div>
+    <!-- Timeline comparison -->
+    <div class="card">
+      <div class="card-title">Time saved visualised</div>
+      <div class="timeline-section">
+        <div class="timeline-label"><span>Without overpaying</span><span id="origTermLabel">—</span></div>
+        <div class="timeline-track">
+          <div class="timeline-fill original-bar" id="origBar" style="width:100%">Original term</div>
+        </div>
       </div>
-      <div class="result-box sipp">
-        <div class="label">SIPP Pension</div>
-        <div class="amount" id="sippPot">—</div>
-        <div class="sub">Projected pot at retirement</div>
+      <div style="margin-top:10px" class="timeline-section">
+        <div class="timeline-label"><span>With overpaying</span><span id="newTermLabel">—</span></div>
+        <div class="timeline-track">
+          <div class="timeline-fill overpay-bar" id="newBar" style="width:80%">New term</div>
+        </div>
+      </div>
+      <div class="timeline-gap" id="timelineGap"></div>
+    </div>
+
+    <!-- Side by side -->
+    <div class="comparison-grid">
+      <div class="comp-box original">
+        <div class="label">❌ Without overpaying</div>
+        <div class="row"><span class="k">Monthly payment</span><span class="v" id="origPayment">—</span></div>
+        <div class="row"><span class="k">Total repaid</span><span class="v" id="origTotal">—</span></div>
+        <div class="row"><span class="k">Total interest</span><span class="v" id="origInterest">—</span></div>
+        <div class="row"><span class="k">Paid off</span><span class="v" id="origDate">—</span></div>
+      </div>
+      <div class="comp-box overpay">
+        <div class="label">✓ With overpaying</div>
+        <div class="row"><span class="k">Monthly payment</span><span class="v good" id="newPayment">—</span></div>
+        <div class="row"><span class="k">Total repaid</span><span class="v good" id="newTotal">—</span></div>
+        <div class="row"><span class="k">Total interest</span><span class="v good" id="newInterest">—</span></div>
+        <div class="row"><span class="k">Paid off</span><span class="v good" id="newDate">—</span></div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title">Full Breakdown</div>
-      <div class="breakdown">
-        <div class="breakdown-row">
-          <span class="key">Years to retirement</span>
-          <span class="val" id="years">—</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="key">Your income tax band</span>
-          <span class="val" id="taxBand">—</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="key">Monthly contribution</span>
-          <span class="val" id="monthlyDisp">—</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="key">SIPP: tax relief added per month</span>
-          <span class="val green" id="taxRelief">—</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="key">SIPP: effective monthly contribution</span>
-          <span class="val green" id="sippEffective">—</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="key">ISA: monthly contribution</span>
-          <span class="val blue" id="isaEffective">—</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="key">ISA: withdrawals are 100% tax-free</span>
-          <span class="val blue">✓ Always</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="key">SIPP: 25% lump sum tax-free at 57+</span>
-          <span class="val green">✓ From age 57</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="key">Total you put in over this period</span>
-          <span class="val" id="totalContrib">—</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="key">Investment growth</span>
-          <span class="val green" id="totalGrowth">—</span>
-        </div>
-      </div>
+      <div class="card-title">Full breakdown</div>
+      <div class="breakdown-row"><span class="key">Outstanding balance</span><span class="val" id="balanceDisp">—</span></div>
+      <div class="breakdown-row"><span class="key">Interest rate</span><span class="val" id="rateDisp">—</span></div>
+      <div class="breakdown-row"><span class="key">Standard monthly payment</span><span class="val" id="stdPayment">—</span></div>
+      <div class="breakdown-row"><span class="key">Monthly overpayment</span><span class="val green" id="overpayDisp">—</span></div>
+      <div class="breakdown-row"><span class="key">Total monthly payment</span><span class="val green" id="totalMonthly">—</span></div>
+      <div class="breakdown-row"><span class="key">Interest saved</span><span class="val green" id="savedDisp">—</span></div>
+      <div class="breakdown-row"><span class="key">Time saved</span><span class="val green" id="timeSavedDisp">—</span></div>
+      <div class="breakdown-row"><span class="key">Equivalent hourly rate of return</span><span class="val green" id="returnRate">—</span></div>
     </div>
 
     <!-- CTA -->
     <div class="cta-box">
-      <h3>Ready to open your account?</h3>
-      <p>Compare the UK's top-rated investment platforms and open an ISA or SIPP in minutes. FCA-regulated and trusted by millions of UK investors.</p>
+      <h3>Could you get a better rate?</h3>
+      <p>Even a 0.5% rate reduction can save you thousands. Compare remortgage deals from 100+ lenders in minutes — no impact on your credit score.</p>
       <div class="cta-links">
-        <a class="cta-link primary" href="https://www.hl.co.uk/investment-services/stocks-shares-isa" target="_blank" rel="noopener sponsored" id="hlLink">
-          <span>Open an ISA or SIPP with Hargreaves Lansdown</span>
+        <a class="cta-link primary" href="https://www.habito.com" target="_blank" rel="noopener sponsored">
+          <span>Find a better rate with Habito — free mortgage broker</span>
           <span class="arrow">→</span>
         </a>
-        <a class="cta-link secondary" href="https://www.vanguardinvestor.co.uk/what-we-offer/stocks-shares-isa" target="_blank" rel="noopener sponsored">
-          <span>Explore low-cost investing with Vanguard</span>
+        <a class="cta-link secondary" href="https://www.truefoot.co.uk" target="_blank" rel="noopener sponsored">
+          <span>Compare mortgage deals on L&C — no broker fee</span>
           <span class="arrow">→</span>
         </a>
       </div>
       <div class="cta-disclaimer">
-        ⚠️ Capital at risk. The value of investments can go down as well as up. This calculator is for educational purposes only and does not constitute financial advice. Past performance is not a guide to future returns. This site contains affiliate links — we may earn a commission at no extra cost to you.
+        ⚠️ Your home may be repossessed if you do not keep up repayments on your mortgage. This calculator is for educational purposes only and does not constitute financial advice. This site contains affiliate links — we may earn a commission at no extra cost to you.
       </div>
     </div>
 
     <!-- Email capture -->
     <div class="email-box">
-      <h4>📊 Save your results</h4>
-      <p>Get a free ISA vs SIPP comparison guide emailed to you — including which account to open first based on your tax band.</p>
+      <h4>🏠 Get your free remortgage checklist</h4>
+      <p>We'll email you a free guide: 7 questions to ask before remortgaging — and when overpaying beats switching.</p>
       <div class="email-form">
         <input type="email" class="email-input" id="emailInput" placeholder="your@email.com">
         <button class="email-btn" onclick="submitEmail()">Send me the guide</button>
       </div>
-      <div class="email-success" id="emailSuccess">✓ Guide on its way — check your inbox!</div>
+      <div class="email-success" id="emailSuccess">✓ Checklist on its way — check your inbox!</div>
     </div>
 
     <div class="risk-warning">
-      <strong>Risk warning</strong>
-      Investing involves risk. You may get back less than you invest. This calculator provides estimates based on the inputs you provide and assumes a constant rate of return, which is not guaranteed. Tax treatment depends on your individual circumstances and may change. The annual ISA allowance is £20,000 and SIPP annual allowance is £60,000 (or 100% of earnings, whichever is lower) for the 2025/26 tax year. Always seek independent financial advice before making investment decisions.
+      <strong>Important</strong>
+      This calculator assumes a repayment mortgage with a constant interest rate. Results are estimates only. Check with your lender whether overpayment charges apply — most lenders allow up to 10% of the outstanding balance per year without penalty. Your home may be repossessed if you do not keep up mortgage repayments.
     </div>
 
   </div>
 
   <!-- SEO content -->
   <div class="seo-content">
-    <h2>ISA vs SIPP: Which is better for UK investors in 2026?</h2>
-    <p>The decision between an Individual Savings Account (ISA) and a Self-Invested Personal Pension (SIPP) is one of the most important financial choices UK adults face. Both offer tax advantages, but they work in very different ways — and the right answer depends on your age, income, and when you need the money.</p>
+    <h2>Should you overpay your mortgage in 2026?</h2>
+    <p>With mortgage rates still elevated compared to the historic lows of 2020–2022, overpaying your mortgage is one of the most powerful financial moves available to UK homeowners. Every pound you overpay reduces your outstanding balance, which means you pay less interest from that point forward — and the savings compound over the remaining term.</p>
 
-    <h3>How does a Stocks & Shares ISA work?</h3>
-    <p>A Stocks & Shares ISA lets you invest up to £20,000 per year in stocks, funds, bonds and other assets completely free of UK income tax and capital gains tax. Crucially, you can withdraw your money at any time without penalty or tax. This flexibility makes ISAs ideal for medium-term goals as well as retirement savings.</p>
+    <h3>How much can you save by overpaying?</h3>
+    <p>On a £200,000 mortgage at 4.5% with 20 years remaining, overpaying just £200 per month saves approximately £22,000 in interest and cuts nearly 4 years from the term. The savings are front-loaded — overpaying early in your mortgage term has a dramatically larger impact than overpaying later, because interest is calculated on the remaining balance.</p>
 
-    <h3>How does a SIPP work?</h3>
-    <p>A SIPP is a type of personal pension that gives you control over how your money is invested. The key advantage is tax relief — for every £80 you contribute, the government adds £20 (basic rate taxpayers), making it effectively £100 invested. Higher rate taxpayers can claim an additional 20% through their tax return, making SIPPs extremely powerful for higher earners. The trade-off is that you can't access the money until age 57 (rising to 58 in 2028).</p>
+    <h3>What is the 10% overpayment rule?</h3>
+    <p>Most UK mortgage lenders allow you to overpay up to 10% of your outstanding balance each year without incurring early repayment charges (ERCs). For example, on a £200,000 mortgage you could overpay up to £20,000 per year — or around £1,667 per month. Always check your mortgage terms before overpaying, as ERCs can be significant (typically 1–5% of the amount overpaid above the limit).</p>
 
-    <h3>ISA vs SIPP: key differences</h3>
-    <ul>
-      <li><strong>Tax relief:</strong> SIPPs get upfront tax relief; ISAs do not</li>
-      <li><strong>Access:</strong> ISA money is available anytime; SIPP money is locked until 57+</li>
-      <li><strong>Withdrawals:</strong> ISA withdrawals are fully tax-free; SIPP withdrawals are partially taxable (except the 25% tax-free lump sum)</li>
-      <li><strong>Annual limits:</strong> ISA: £20,000/year; SIPP: up to £60,000/year</li>
-      <li><strong>Inheritance:</strong> SIPPs are generally outside your estate for inheritance tax purposes; ISAs are not</li>
-    </ul>
+    <h3>Overpaying vs investing — which is better?</h3>
+    <p>Overpaying your mortgage gives you a guaranteed, tax-free return equal to your mortgage interest rate. Investing in a Stocks and Shares ISA has historically returned 6–8% annually over long periods, but with volatility and no guarantee. If your mortgage rate is above 4.5%, overpaying is often the lower-risk choice. If your rate is below 3%, investing the difference may generate better long-term returns — especially for higher rate taxpayers using a SIPP.</p>
 
-    <h3>When is a SIPP better than an ISA?</h3>
-    <p>SIPPs are typically better for higher rate (40%) and additional rate (45%) taxpayers, people who won't need the money before age 57, those who want to reduce their inheritance tax liability, and anyone who wants to maximise their retirement pot through tax-efficient compounding over decades.</p>
-
-    <h3>When is an ISA better than a SIPP?</h3>
-    <p>ISAs are typically better for basic rate (20%) taxpayers who don't receive much additional benefit from tax relief, people who may need access to their funds before retirement, those who prefer simplicity and flexibility, and younger investors who want the option to use the money for a house purchase or other goals.</p>
+    <h3>Can I overpay a fixed rate mortgage?</h3>
+    <p>Yes — most fixed rate mortgages in the UK allow overpayments of up to 10% of the outstanding balance per year without penalty. Some lenders are more flexible than this. If you want to overpay more than 10%, you may need to wait until your fixed rate period ends and you switch to a new deal, or accept the early repayment charge.</p>
   </div>
 
-  <!-- Other tools -->
   <div class="other-tools">
     <h3>Other free DecisionCalc tools</h3>
     <div class="tools-grid">
-      <a class="tool-link" href="/mortgage-overpayment-calculator.html">
-        <span class="tool-icon">🏠</span>
-        Mortgage Overpayment Calculator
+      <a class="tool-link" href="/isa-sipp-calculator.html">
+        <span class="tool-icon">📈</span>
+        ISA vs SIPP Calculator
       </a>
       <a class="tool-link" href="/car-repair-vs-replace.html">
         <span class="tool-icon">🚗</span>
-        Car Repair vs Replace Calculator
+        Car Repair vs Replace
       </a>
       <a class="tool-link" href="/energy-bill-optimiser.html">
         <span class="tool-icon">⚡</span>
@@ -381,83 +342,121 @@
 </footer>
 
 <script>
-  function fmt(n) {
-    return '£' + Math.round(n).toLocaleString('en-GB');
+  function fmt(n) { return '£' + Math.round(n).toLocaleString('en-GB'); }
+  function fmtDec(n) { return '£' + n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+  function monthlyPayment(principal, annualRate, months) {
+    const r = annualRate / 12 / 100;
+    if (r === 0) return principal / months;
+    return principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
   }
 
-  function getTaxRate(salary) {
-    if (salary <= 12570) return { rate: 0, label: 'Personal allowance (0%)' };
-    if (salary <= 50270) return { rate: 0.20, label: 'Basic rate (20%)' };
-    if (salary <= 125140) return { rate: 0.40, label: 'Higher rate (40%)' };
-    return { rate: 0.45, label: 'Additional rate (45%)' };
+  function calcMonthsToPayoff(principal, annualRate, monthlyPmt) {
+    const r = annualRate / 12 / 100;
+    if (r === 0) return principal / monthlyPmt;
+    if (monthlyPmt <= principal * r) return Infinity;
+    return -Math.log(1 - (principal * r) / monthlyPmt) / Math.log(1 + r);
   }
 
-  function futureValue(monthly, years, annualRate, existing) {
-    const r = annualRate / 12;
-    const n = years * 12;
-    if (r === 0) return existing + monthly * n;
-    const fvExisting = existing * Math.pow(1 + r, n);
-    const fvContribs = monthly * (Math.pow(1 + r, n) - 1) / r;
-    return fvExisting + fvContribs;
+  function totalInterest(principal, annualRate, months, extraMonthly) {
+    const r = annualRate / 12 / 100;
+    const stdPmt = monthlyPayment(principal, annualRate, months);
+    const pmt = stdPmt + extraMonthly;
+    let balance = principal;
+    let totalInt = 0;
+    let actualMonths = 0;
+    while (balance > 0.01 && actualMonths < months * 12) {
+      const intCharge = balance * r;
+      totalInt += intCharge;
+      balance = balance + intCharge - pmt;
+      if (balance < 0) balance = 0;
+      actualMonths++;
+    }
+    return { totalInt, actualMonths };
+  }
+
+  function addMonths(date, months) {
+    const d = new Date(date);
+    d.setMonth(d.getMonth() + Math.round(months));
+    return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
   }
 
   function calculate() {
-    const age = parseInt(document.getElementById('age').value);
-    const retireAge = parseInt(document.getElementById('retireAge').value);
-    const salary = parseFloat(document.getElementById('salary').value) || 0;
-    const monthly = parseFloat(document.getElementById('monthly').value) || 0;
-    const growth = parseFloat(document.getElementById('growth').value) / 100;
-    const existing = parseFloat(document.getElementById('existing').value) || 0;
+    const balance = parseFloat(document.getElementById('balance').value) || 0;
+    const rate = parseFloat(document.getElementById('rate').value) || 0;
+    const term = parseInt(document.getElementById('term').value) || 0;
+    const overpay = parseFloat(document.getElementById('overpay').value) || 0;
 
-    const years = Math.max(retireAge - age, 1);
-    const tax = getTaxRate(salary);
+    if (balance <= 0 || term <= 0) return;
 
-    // ISA: contribute monthly, grows tax-free
-    const isaMonthly = monthly;
-    const isaPotRaw = futureValue(isaMonthly, years, growth, existing);
+    const months = term * 12;
+    const stdPmt = monthlyPayment(balance, rate, months);
 
-    // SIPP: government adds tax relief on top
-    const taxRelief = monthly * (tax.rate / (1 - tax.rate));
-    const sippMonthly = monthly + taxRelief;
-    const sippPotRaw = futureValue(sippMonthly, years, growth, existing);
+    const origResult = totalInterest(balance, rate, months, 0);
+    const newResult = totalInterest(balance, rate, months, overpay);
 
-    // Total contributions
-    const totalContrib = monthly * years * 12 + existing;
-    const totalGrowthIsa = isaPotRaw - totalContrib;
+    const origTotalPaid = stdPmt * origResult.actualMonths;
+    const newTotalPaid = (stdPmt + overpay) * newResult.actualMonths;
 
-    // Show results
-    document.getElementById('isaPot').textContent = fmt(isaPotRaw);
-    document.getElementById('sippPot').textContent = fmt(sippPotRaw);
-    document.getElementById('years').textContent = years + ' years';
-    document.getElementById('taxBand').textContent = tax.label;
-    document.getElementById('monthlyDisp').textContent = fmt(monthly) + '/month';
-    document.getElementById('taxRelief').textContent = '+' + fmt(taxRelief) + '/month';
-    document.getElementById('sippEffective').textContent = fmt(sippMonthly) + '/month';
-    document.getElementById('isaEffective').textContent = fmt(isaMonthly) + '/month';
-    document.getElementById('totalContrib').textContent = fmt(totalContrib);
-    document.getElementById('totalGrowth').textContent = '+' + fmt(Math.max(isaPotRaw - totalContrib, 0));
+    const interestSaved = origResult.totalInt - newResult.totalInt;
+    const monthsSaved = origResult.actualMonths - newResult.actualMonths;
+    const yearsSaved = Math.floor(monthsSaved / 12);
+    const remMonths = monthsSaved % 12;
 
-    // Winner banner
-    const banner = document.getElementById('winnerBanner');
-    const winnerTitle = document.getElementById('winnerTitle');
-    const winnerSub = document.getElementById('winnerSub');
-    const winnerIcon = document.getElementById('winnerIcon');
-    const diff = Math.abs(sippPotRaw - isaPotRaw);
+    const now = new Date();
+    const origDate = addMonths(now, origResult.actualMonths);
+    const newDate = addMonths(now, newResult.actualMonths);
 
-    if (sippPotRaw > isaPotRaw) {
-      banner.className = 'winner-banner sipp-wins';
-      winnerIcon.textContent = '🏆';
-      winnerTitle.textContent = 'SIPP wins for your situation';
-      winnerSub.textContent = 'Tax relief means your SIPP could grow ' + fmt(diff) + ' more than an ISA by retirement. But remember you can\'t access it until age 57.';
-    } else {
-      banner.className = 'winner-banner isa-wins';
-      winnerIcon.textContent = '🏆';
-      winnerTitle.textContent = 'ISA is competitive for your situation';
-      winnerSub.textContent = 'At your tax band, the flexibility of an ISA outweighs the SIPP\'s tax relief advantage. You can access your money at any time.';
-    }
+    const yearsSavedStr = yearsSaved > 0
+      ? yearsSaved + ' year' + (yearsSaved !== 1 ? 's' : '') + (remMonths > 0 ? ' ' + remMonths + ' month' + (remMonths !== 1 ? 's' : '') : '')
+      : remMonths + ' month' + (remMonths !== 1 ? 's' : '');
+
+    // Populate hero
+    document.getElementById('interestSaved').textContent = fmt(interestSaved);
+    document.getElementById('yearsSaved').textContent = yearsSavedStr;
+    document.getElementById('newPayoff').textContent = newDate;
+    document.getElementById('origPayoff').textContent = origDate;
+
+    // Timeline
+    const pct = Math.round((newResult.actualMonths / origResult.actualMonths) * 100);
+    document.getElementById('origBar').style.width = '100%';
+    document.getElementById('origBar').textContent = term + ' years';
+    document.getElementById('newBar').style.width = pct + '%';
+    document.getElementById('newBar').textContent = Math.round(newResult.actualMonths / 12 * 10) / 10 + ' yrs';
+    document.getElementById('origTermLabel').textContent = term + ' years';
+    document.getElementById('newTermLabel').textContent = Math.round(newResult.actualMonths / 12 * 10) / 10 + ' years';
+    document.getElementById('timelineGap').textContent = '↑ ' + yearsSavedStr + ' saved';
+
+    // Comparison boxes
+    document.getElementById('origPayment').textContent = fmtDec(stdPmt) + '/mo';
+    document.getElementById('origTotal').textContent = fmt(origTotalPaid);
+    document.getElementById('origInterest').textContent = fmt(origResult.totalInt);
+    document.getElementById('origDate').textContent = origDate;
+
+    document.getElementById('newPayment').textContent = fmtDec(stdPmt + overpay) + '/mo';
+    document.getElementById('newTotal').textContent = fmt(newTotalPaid);
+    document.getElementById('newInterest').textContent = fmt(newResult.totalInt);
+    document.getElementById('newDate').textContent = newDate;
+
+    // Breakdown
+    document.getElementById('balanceDisp').textContent = fmt(balance);
+    document.getElementById('rateDisp').textContent = rate.toFixed(1) + '%';
+    document.getElementById('stdPayment').textContent = fmtDec(stdPmt) + '/month';
+    document.getElementById('overpayDisp').textContent = fmt(overpay) + '/month';
+    document.getElementById('totalMonthly').textContent = fmtDec(stdPmt + overpay) + '/month';
+    document.getElementById('savedDisp').textContent = fmt(interestSaved);
+    document.getElementById('timeSavedDisp').textContent = yearsSavedStr;
+    document.getElementById('returnRate').textContent = rate.toFixed(1) + '% guaranteed (= your mortgage rate)';
 
     document.getElementById('results').classList.add('show');
-    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function calculateAndScroll() {
+    calculate();
+    const results = document.getElementById('results');
+    if (results.classList.contains('show')) {
+      results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 
   function submitEmail() {
@@ -467,12 +466,10 @@
       return;
     }
     document.getElementById('emailInput').style.borderColor = '#d1d5db';
-    // In production, POST to your Supabase email capture endpoint
     document.querySelector('.email-form').style.display = 'none';
     document.getElementById('emailSuccess').style.display = 'block';
   }
 
-  // Calculate on load with defaults
   calculate();
 </script>
 
